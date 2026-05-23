@@ -1,0 +1,298 @@
+{
+  "trigger": "manual",
+  "ts": "2026-05-20T13:00:40.265939",
+  "tickers": [
+    "INTC",
+    "NVDA",
+    "INM",
+    "POET",
+    "GIPR",
+    "MU",
+    "NXXT",
+    "VRAX",
+    "HUBC",
+    "AMST"
+  ],
+  "picks": [
+    {
+      "ticker": "INTC",
+      "score": 3.65,
+      "sources": [
+        "most_active",
+        "news"
+      ],
+      "change_pct": null,
+      "price": null,
+      "volume": 150261169,
+      "headline": "Will Nvidia Hit the $6 Trillion Mark on Thursday?"
+    },
+    {
+      "ticker": "NVDA",
+      "score": 3.55,
+      "sources": [
+        "most_active",
+        "news"
+      ],
+      "change_pct": null,
+      "price": null,
+      "volume": 141605328,
+      "headline": "Stock Market: Will S&P 500 Open Up Or Down Today?"
+    },
+    {
+      "ticker": "INM",
+      "score": 3.2,
+      "sources": [
+        "most_active",
+        "news"
+      ],
+      "change_pct": null,
+      "price": null,
+      "volume": 93062099,
+      "headline": "SHAREHOLDER NOTICE: Brodsky & Smith Announces an Investigation of InMed Pharmaceuticals, Inc. (Nasdaq \u2013 INM)"
+    },
+    {
+      "ticker": "POET",
+      "score": 2.85,
+      "sources": [
+        "most_active",
+        "news"
+      ],
+      "change_pct": null,
+      "price": null,
+      "volume": 76700014,
+      "headline": "Lead Plaintiff Deadlines in Shareholder Class Action Lawsuits Against Regencell Bioscience Holdings Limited (RGC), SES AI Corporation (SES), and POET Technologies Inc. (POET) Announced by Holzer & Holzer, LLC"
+    },
+    {
+      "ticker": "GIPR",
+      "score": 2.35,
+      "sources": [
+        "most_active"
+      ],
+      "change_pct": null,
+      "price": null,
+      "volume": 463483093,
+      "headline": null
+    },
+    {
+      "ticker": "MU",
+      "score": 2.35,
+      "sources": [
+        "most_active",
+        "news"
+      ],
+      "change_pct": null,
+      "price": null,
+      "volume": 61853635,
+      "headline": "1 Unstoppable Stock to Buy Before It Joins Nvidia, Alphabet, Apple, and Microsoft in the $3 Trillion Club"
+    },
+    {
+      "ticker": "NXXT",
+      "score": 2.3,
+      "sources": [
+        "most_active"
+      ],
+      "change_pct": null,
+      "price": null,
+      "volume": 397043686,
+      "headline": null
+    },
+    {
+      "ticker": "VRAX",
+      "score": 2.25,
+      "sources": [
+        "most_active"
+      ],
+      "change_pct": null,
+      "price": null,
+      "volume": 181935262,
+      "headline": null
+    },
+    {
+      "ticker": "HUBC",
+      "score": 2.2,
+      "sources": [
+        "most_active"
+      ],
+      "change_pct": null,
+      "price": null,
+      "volume": 156807113,
+      "headline": null
+    },
+    {
+      "ticker": "AMST",
+      "score": 2.1,
+      "sources": [
+        "most_active"
+      ],
+      "change_pct": null,
+      "price": null,
+      "volume": 149200939,
+      "headline": null
+    }
+  ],
+  "decisions": {
+    "INTC": {
+      "action": "hold",
+      "quantity": 0,
+      "confidence": 100,
+      "reasoning": "No valid trade available"
+    },
+    "INM": {
+      "action": "hold",
+      "quantity": 0,
+      "confidence": 100,
+      "reasoning": "No valid trade available"
+    },
+    "POET": {
+      "action": "hold",
+      "quantity": 0,
+      "confidence": 100,
+      "reasoning": "No valid trade available"
+    },
+    "GIPR": {
+      "action": "hold",
+      "quantity": 0,
+      "confidence": 100,
+      "reasoning": "No valid trade available"
+    },
+    "MU": {
+      "action": "hold",
+      "quantity": 0,
+      "confidence": 100,
+      "reasoning": "No valid trade available"
+    },
+    "NXXT": {
+      "action": "hold",
+      "quantity": 0,
+      "confidence": 100,
+      "reasoning": "No valid trade available"
+    },
+    "VRAX": {
+      "action": "hold",
+      "quantity": 0,
+      "confidence": 100,
+      "reasoning": "No valid trade available"
+    },
+    "HUBC": {
+      "action": "hold",
+      "quantity": 0,
+      "confidence": 100,
+      "reasoning": "No valid trade available"
+    },
+    "AMST": {
+      "action": "hold",
+      "quantity": 0,
+      "confidence": 100,
+      "reasoning": "No valid trade available"
+    },
+    "NVDA": {
+      "action": "buy",
+      "quantity": 62,
+      "confidence": 72,
+      "reasoning": "6/8 analysts bullish (fundamentals, technical, Buffett, Wood, Druckenmiller, Lynch). Bearish sentiment/Burry offset by strong consensus."
+    }
+  },
+  "executions": [
+    {
+      "ticker": "INTC",
+      "action": "hold",
+      "requested_qty": 0,
+      "submitted_qty": 0,
+      "status": "skipped",
+      "mode": "dry-run",
+      "ts": "2026-05-20T13:00:40.263476",
+      "reason": "No valid trade available"
+    },
+    {
+      "ticker": "INM",
+      "action": "hold",
+      "requested_qty": 0,
+      "submitted_qty": 0,
+      "status": "skipped",
+      "mode": "dry-run",
+      "ts": "2026-05-20T13:00:40.263546",
+      "reason": "No valid trade available"
+    },
+    {
+      "ticker": "POET",
+      "action": "hold",
+      "requested_qty": 0,
+      "submitted_qty": 0,
+      "status": "skipped",
+      "mode": "dry-run",
+      "ts": "2026-05-20T13:00:40.263554",
+      "reason": "No valid trade available"
+    },
+    {
+      "ticker": "GIPR",
+      "action": "hold",
+      "requested_qty": 0,
+      "submitted_qty": 0,
+      "status": "skipped",
+      "mode": "dry-run",
+      "ts": "2026-05-20T13:00:40.263559",
+      "reason": "No valid trade available"
+    },
+    {
+      "ticker": "MU",
+      "action": "hold",
+      "requested_qty": 0,
+      "submitted_qty": 0,
+      "status": "skipped",
+      "mode": "dry-run",
+      "ts": "2026-05-20T13:00:40.263564",
+      "reason": "No valid trade available"
+    },
+    {
+      "ticker": "NXXT",
+      "action": "hold",
+      "requested_qty": 0,
+      "submitted_qty": 0,
+      "status": "skipped",
+      "mode": "dry-run",
+      "ts": "2026-05-20T13:00:40.263568",
+      "reason": "No valid trade available"
+    },
+    {
+      "ticker": "VRAX",
+      "action": "hold",
+      "requested_qty": 0,
+      "submitted_qty": 0,
+      "status": "skipped",
+      "mode": "dry-run",
+      "ts": "2026-05-20T13:00:40.263573",
+      "reason": "No valid trade available"
+    },
+    {
+      "ticker": "HUBC",
+      "action": "hold",
+      "requested_qty": 0,
+      "submitted_qty": 0,
+      "status": "skipped",
+      "mode": "dry-run",
+      "ts": "2026-05-20T13:00:40.263577",
+      "reason": "No valid trade available"
+    },
+    {
+      "ticker": "AMST",
+      "action": "hold",
+      "requested_qty": 0,
+      "submitted_qty": 0,
+      "status": "skipped",
+      "mode": "dry-run",
+      "ts": "2026-05-20T13:00:40.263581",
+      "reason": "No valid trade available"
+    },
+    {
+      "ticker": "NVDA",
+      "action": "buy",
+      "requested_qty": 62,
+      "submitted_qty": 62,
+      "status": "dry_run_logged",
+      "mode": "dry-run",
+      "ts": "2026-05-20T13:00:40.263585",
+      "reason": "6/8 analysts bullish (fundamentals, technical, Buffett, Wood, Druckenmiller, Lynch). Bearish sentiment/Burry offset by strong consensus."
+    }
+  ],
+  "mode": "dry-run"
+}

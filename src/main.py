@@ -22,7 +22,7 @@ from dateutil.relativedelta import relativedelta
 import json
 
 # Load environment variables from .env file
-load_dotenv()
+load_dotenv(override=True)
 
 init(autoreset=True)
 

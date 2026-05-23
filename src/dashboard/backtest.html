@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>AI Hedge Fund — Backtest</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/theme.css" />
+</head>
+<body>
+<div class="app">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="brand">
+      <span class="dot"></span>
+      <span>AI Hedge Fund</span>
+    </div>
+    <div class="tabs">
+      <a class="tab" href="/">📊 Live Portfolio</a>
+      <a class="tab active" href="/backtest">🧪 Backtest</a>
+      <a class="tab" href="/stocks">📈 Stocks</a>
+      <a class="tab" data-tip="Coming soon">🤖 Analysts</a>
+      <a class="tab" data-tip="Coming soon">⚙️ Settings</a>
+    </div>
+    <div class="right">
+      <div class="cmd-k" data-tip="Quick search (coming soon)">
+        <span>Search</span><kbd>⌘K</kbd>
+      </div>
+      <div id="status-pill" class="status-pill">
+        <span class="pulse"></span>
+        <span id="status-text">LOADING</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- TICKER STRIP -->
+  <div class="tickerbar" id="tickerbar">
+    <div class="empty muted" style="padding:18px">Loading…</div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Backtest</div>
+        <a class="nav-item active"><span class="icon">📊</span> Overview</a>
+        <a class="nav-item"><span class="icon">💱</span> All Trades <span class="badge" id="nav-trade-count">0</span></a>
+        <a class="nav-item"><span class="icon">📈</span> Equity Curve</a>
+        <a class="nav-item"><span class="icon">🎯</span> Per-Ticker</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Metrics</div>
+        <a class="nav-item"><span class="icon">📐</span> Risk / Sharpe</a>
+        <a class="nav-item"><span class="icon">📉</span> Drawdown</a>
+        <a class="nav-item"><span class="icon">⚖️</span> Win/Loss</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Compare</div>
+        <a class="nav-item"><span class="icon">🆚</span> vs S&P 500</a>
+        <a class="nav-item"><span class="icon">📜</span> Run History</a>
+      </div>
+    </aside>
+
+    <!-- CENTER -->
+    <main class="content">
+
+      <div class="page-head">
+        <div>
+          <h1>🛢️🥇 Commodities Backtest</h1>
+          <div class="subtitle">XOM, CVX, NEM, GOLD · qwen3:8b · Finnhub + Alpaca · updated <span id="updated">—</span></div>
+        </div>
+        <div class="actions">
+          <button class="btn ghost" onclick="tick()">↻ Refresh</button>
+          <button class="btn">Export CSV</button>
+        </div>
+      </div>
+
+      <!-- Progress card (prominent while running) -->
+      <div class="panel" id="progress-card">
+        <div class="panel-head">
+          <h2>⏱️ Progress</h2>
+          <div class="right">
+            <span class="muted" style="font-size:12px" id="progress-eta"></span>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div style="display:flex;justify-content:space-between;align-items:baseline">
+            <span style="font-size:14px;font-weight:500" id="progress-text">—</span>
+            <span class="muted" style="font-size:12px" id="progress-pct">0%</span>
+          </div>
+          <div class="progress"><div class="fill" id="progress-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="label">Total Value</div>
+          <div class="value" id="kpi-total">—</div>
+          <div class="sub" id="kpi-total-sub">cash — · pos —</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Return</div>
+          <div class="value" id="kpi-return">—</div>
+          <div class="sub">from $10,000</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Sharpe Ratio</div>
+          <div class="value" id="kpi-sharpe">—</div>
+          <div class="sub">risk-adjusted</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Max Drawdown</div>
+          <div class="value" id="kpi-dd">—</div>
+          <div class="sub">peak to trough</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Trades</div>
+          <div class="value" id="kpi-trades">0</div>
+          <div class="sub" id="kpi-trades-sub">over 0 days</div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="panel">
+        <div class="panel-head">
+          <h2>📈 Equity Curve <span class="muted" style="font-weight:400;font-size:11px">paper portfolio over time</span></h2>
+          <div class="right">
+            <button class="btn ghost" onclick="if(chart)chart.resetZoom()" data-tip="Reset zoom">⤢</button>
+          </div>
+        </div>
+        <div class="panel-body" style="height:360px">
+          <div class="chart-host"><canvas id="chart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Trades table -->
+      <div class="panel">
+        <div class="panel-head">
+          <h2>💱 Trade History <span class="muted" style="font-weight:400;font-size:11px">most recent first</span></h2>
+          <div class="right">
+            <div class="segmented">
+              <button class="active">ALL</button>
+              <button>BUY</button>
+              <button>SELL</button>
+              <button>SHORT</button>
+              <button>COVER</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body flush" style="max-height:520px;overflow-y:auto" id="trades-body">
+          <div class="empty"><div class="emoji">⏳</div>Loading trades…</div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="rightbar">
+
+      <input type="text" class="search-input" placeholder="Search trade by ticker, date…" id="search-input" />
+
+      <!-- Per-ticker breakdown -->
+      <div class="panel">
+        <div class="panel-head">
+          <h2>🎯 Per-Ticker</h2>
+        </div>
+        <div class="panel-body flush" id="per-ticker-body">
+          <div class="empty"><div class="emoji">⏳</div>Computing…</div>
+        </div>
+      </div>
+
+      <!-- Run config -->
+      <div class="panel">
+        <div class="panel-head">
+          <h2>⚙️ Run Config</h2>
+        </div>
+        <div class="panel-body">
+          <div class="list-row">
+            <div class="left"><div class="name">Model</div></div>
+            <div class="right"><span class="badge long">qwen3:8b</span></div>
+          </div>
+          <div class="list-row">
+            <div class="left"><div class="name">Initial Capital</div></div>
+            <div class="right"><div class="v">$10,000</div></div>
+          </div>
+          <div class="list-row">
+            <div class="left"><div class="name">Tickers</div></div>
+            <div class="right"><div class="v">4</div></div>
+          </div>
+          <div class="list-row">
+            <div class="left"><div class="name">Analysts</div></div>
+            <div class="right"><div class="v">9</div></div>
+          </div>
+          <div class="list-row">
+            <div class="left"><div class="name">Range</div><div class="meta">Mar 20 → May 20</div></div>
+            <div class="right"><div class="v">2026</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top trades -->
+      <div class="panel">
+        <div class="panel-head">
+          <h2>🏆 Recent Activity</h2>
+        </div>
+        <div class="panel-body" id="recent-body" style="max-height:340px;overflow-y:auto">
+          <div class="empty"><div class="emoji">⏳</div>Loading…</div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+<script>
+const fmtUsd = (n, max=2) => n == null ? '—' : new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:max }).format(n);
+const fmtUsd0 = n => fmtUsd(n, 0);
+const fmtPct = n => n == null ? '—' : (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+const sign = n => n == null ? '' : (n >= 0 ? '+' : '');
+const clsGL = n => n == null ? '' : (n >= 0 ? 'gain' : 'loss');
+
+let chart = null;
+let lastData = null;
+let filterAction = 'ALL';
+
+function spark(canvas, values, color) {
+  if (!canvas || !values?.length) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * 2;
+  canvas.height = canvas.offsetHeight * 2;
+  ctx.scale(2, 2);
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  const min = Math.min(...values), max = Math.max(...values);
+  const range = max - min || 1;
+  ctx.beginPath();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  values.forEach((v, i) => {
+    const x = (i / (values.length-1)) * W;
+    const y = H - ((v-min)/range) * H * 0.85 - H*0.075;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+  ctx.fillStyle = color + '22';
+  ctx.fill();
+}
+
+// =========== Ticker bar (tickers + their stats) ===========
+function renderTickers(d) {
+  const bar = document.getElementById('tickerbar');
+  const tickers = ['XOM','CVX','NEM','GOLD'];
+  const pertkr = computePerTicker(d.trades, tickers);
+
+  const portValues = (d.daily || []).map(x => x.total_value);
+  const portPill = {
+    sym: 'PORTFOLIO',
+    price: portValues.length ? portValues[portValues.length-1] : 10000,
+    chg: d.metrics?.return_pct != null ? d.metrics.return_pct / 100 : null,
+    vals: portValues,
+  };
+
+  const pills = [portPill, ...tickers.map(t => {
+    const st = pertkr[t] || {};
+    return {
+      sym: t,
+      price: st.lastPrice,
+      chg: st.netPlPct,
+      vals: st.priceSeries,
+    };
+  })];
+
+  bar.innerHTML = pills.map((p, i) => {
+    const color = p.chg == null ? 'var(--text-tertiary)' : (p.chg >= 0 ? 'var(--gain)' : 'var(--loss)');
+    const chgTxt = p.chg == null ? '—' : `${sign(p.chg)}${(p.chg*100).toFixed(2)}%`;
+    const priceTxt = p.price == null ? '—' : (p.sym === 'PORTFOLIO' ? fmtUsd0(p.price) : '$' + p.price.toFixed(2));
+    return `<div class="ticker-pill" data-i="${i}">
+      <div class="sym">${p.sym}</div>
+      <div class="row">
+        <span class="price">${priceTxt}</span>
+        <span class="chg" style="color:${color}">${chgTxt}</span>
+      </div>
+      <canvas class="spark" id="spark-${i}"></canvas>
+    </div>`;
+  }).join('');
+
+  requestAnimationFrame(() => {
+    pills.forEach((p, i) => {
+      const cv = document.getElementById('spark-'+i);
+      if (cv && p.vals && p.vals.length > 2) {
+        spark(cv, p.vals, p.chg >= 0 ? '#10b981' : '#ef4444');
+      }
+    });
+  });
+}
+
+function computePerTicker(trades, tickers) {
+  const stats = {};
+  tickers.forEach(t => {
+    const myTrades = trades.filter(x => x.ticker === t);
+    if (!myTrades.length) { stats[t] = {}; return; }
+    const prices = myTrades.map(x => x.price).reverse();
+    const totalVol = myTrades.reduce((s, x) => s + Math.abs(x.qty), 0);
+    const buyVol = myTrades.filter(x => ['BUY','COVER'].includes(x.action)).reduce((s, x) => s + Math.abs(x.qty), 0);
+    const sellVol = myTrades.filter(x => ['SELL','SHORT'].includes(x.action)).reduce((s, x) => s + Math.abs(x.qty), 0);
+    // crude P&L: sum of position_value rows
+    const netPl = myTrades.reduce((s, x) => s + (x.position_value || 0), 0);
+    const lastPrice = prices[prices.length - 1] || prices[0];
+    const firstPrice = prices[0];
+    const netPlPct = firstPrice ? (lastPrice - firstPrice) / firstPrice : 0;
+    stats[t] = {
+      tradeCount: myTrades.length,
+      totalVol, buyVol, sellVol,
+      netPl, netPlPct,
+      lastPrice, firstPrice,
+      priceSeries: prices,
+    };
+  });
+  return stats;
+}
+
+// =========== KPIs ===========
+function renderKpis(m, trade_count, day_count) {
+  const total = m.total_value;
+  const ret = m.return_pct;
+
+  document.getElementById('kpi-total').textContent = fmtUsd0(total);
+  document.getElementById('kpi-total').className = 'value ' + clsGL(ret);
+  document.getElementById('kpi-total-sub').textContent = `cash ${fmtUsd0(m.cash_balance)} · pos ${fmtUsd0(m.position_value)}`;
+  document.getElementById('kpi-return').textContent = fmtPct(ret);
+  document.getElementById('kpi-return').className = 'value ' + clsGL(ret);
+  document.getElementById('kpi-sharpe').textContent = m.sharpe_ratio == null ? '—' : m.sharpe_ratio.toFixed(2);
+  document.getElementById('kpi-sharpe').className = 'value ' + clsGL(m.sharpe_ratio);
+  document.getElementById('kpi-dd').textContent = m.max_drawdown_pct == null ? '—' : m.max_drawdown_pct.toFixed(2) + '%';
+  document.getElementById('kpi-dd').className = 'value ' + (m.max_drawdown_pct < 0 ? 'loss' : '');
+  document.getElementById('kpi-trades').textContent = trade_count.toLocaleString();
+  document.getElementById('kpi-trades-sub').textContent = `over ${day_count} days`;
+  document.getElementById('nav-trade-count').textContent = trade_count;
+}
+
+// =========== Progress ===========
+function renderProgress(d) {
+  const pct = d.progress_pct;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-text').textContent = `${d.days_complete} of ${d.days_total} trading days complete`;
+  const pill = document.getElementById('status-pill');
+  const pillText = document.getElementById('status-text');
+
+  if (d.status === 'complete') {
+    document.getElementById('progress-eta').textContent = '✅ Done';
+    pill.className = 'status-pill'; pillText.textContent = 'COMPLETE';
+    // Hide progress card when fully done
+    // document.getElementById('progress-card').style.display = 'none';
+  } else if (d.days_complete > 1) {
+    const remaining = d.days_total - d.days_complete;
+    const estMin = remaining * 22;
+    const hrs = Math.floor(estMin / 60);
+    const mins = estMin % 60;
+    document.getElementById('progress-eta').textContent = `~${hrs}h ${mins}m remaining`;
+    pill.className = 'status-pill warn'; pillText.textContent = 'RUNNING';
+  } else {
+    document.getElementById('progress-eta').textContent = 'warming up…';
+    pill.className = 'status-pill warn'; pillText.textContent = 'STARTING';
+  }
+}
+
+// =========== Chart ===========
+function buildChart(daily) {
+  if (!daily.length) return;
+  const ts = daily.map(d => new Date(d.date));
+  const totals = daily.map(d => d.total_value);
+
+  const host = document.getElementById('chart');
+  const gctx = host.getContext('2d');
+  const grad = gctx.createLinearGradient(0, 0, 0, 360);
+  grad.addColorStop(0, 'rgba(139,92,246,0.35)');
+  grad.addColorStop(1, 'rgba(139,92,246,0.0)');
+
+  if (chart) chart.destroy();
+  chart = new Chart(gctx, {
+    type: 'line',
+    data: {
+      labels: ts,
+      datasets: [
+        { label: 'Portfolio Value', data: totals,
+          borderColor: '#8b5cf6', backgroundColor: grad,
+          tension: 0.3, pointRadius: daily.length < 15 ? 4 : 0, pointHoverRadius: 5,
+          borderWidth: 2.5, fill: true },
+        { label: 'Initial ($10k)', data: ts.map(() => 10000),
+          borderColor: '#6b7280', borderDash: [4, 4],
+          pointRadius: 0, borderWidth: 1.5, fill: false },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          align: 'end',
+          labels: { color: '#98a2b3', boxWidth: 8, boxHeight: 8, padding: 16, font: { size: 11 } }
+        },
+        tooltip: {
+          backgroundColor: '#1f2230',
+          borderColor: 'rgba(255,255,255,0.12)', borderWidth: 1, padding: 10,
+          titleColor: '#fff', bodyColor: '#98a2b3',
+          callbacks: { label: ctx => `${ctx.dataset.label}: ${fmtUsd0(ctx.parsed.y)}` }
+        },
+        zoom: {
+          zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' },
+          pan: { enabled: true, mode: 'x' },
+        }
+      },
+      scales: {
+        x: { type: 'time', time: { unit: 'day' },
+             grid: { color: 'rgba(255,255,255,0.04)' },
+             ticks: { color: '#6b7280', font: { size: 10 } },
+             border: { display: false } },
+        y: { grid: { color: 'rgba(255,255,255,0.04)' },
+             ticks: { color: '#6b7280', font: { size: 10 }, callback: v => '$' + v.toLocaleString() },
+             border: { display: false } }
+      }
+    }
+  });
+}
+
+// =========== Trades table ===========
+function renderTrades(trades) {
+  const el = document.getElementById('trades-body');
+  const filtered = filterAction === 'ALL' ? trades : trades.filter(t => t.action === filterAction);
+  if (!filtered.length) {
+    el.innerHTML = '<div class="empty"><div class="emoji">📭</div>No trades match filter.</div>';
+    return;
+  }
+  const rows = filtered.slice(0, 200).map(t => `
+    <tr>
+      <td class="left">${t.date}</td>
+      <td class="left"><strong>${t.ticker}</strong></td>
+      <td class="left"><span class="badge ${t.action.toLowerCase()}">${t.action}</span></td>
+      <td>${t.qty}</td>
+      <td>$${t.price.toFixed(2)}</td>
+      <td class="muted">${t.long_shares > 0 ? '+' + t.long_shares + 'L' : ''}${t.short_shares > 0 ? '−' + t.short_shares + 'S' : ''}</td>
+      <td class="${clsGL(t.position_value)}">${t.position_value >= 0 ? '+' : '−'}$${Math.abs(t.position_value).toFixed(0)}</td>
+    </tr>`).join('');
+
+  el.innerHTML = `<table class="pro">
+    <thead><tr>
+      <th class="left">Date</th>
+      <th class="left">Ticker</th>
+      <th class="left">Action</th>
+      <th>Qty</th>
+      <th>Price</th>
+      <th>Position</th>
+      <th>Value</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+// Action filter buttons
+document.querySelectorAll('.segmented button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.segmented button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    filterAction = b.textContent.trim();
+    if (lastData) renderTrades(lastData.trades);
+  });
+});
+
+// =========== Per-ticker panel ===========
+function renderPerTicker(d) {
+  const tickers = ['XOM','CVX','NEM','GOLD'];
+  const stats = computePerTicker(d.trades, tickers);
+  const el = document.getElementById('per-ticker-body');
+  el.innerHTML = tickers.map(t => {
+    const s = stats[t];
+    if (!s || !s.tradeCount) {
+      return `<div class="list-row"><div class="left"><div class="name">${t}</div><div class="meta">no trades</div></div></div>`;
+    }
+    return `<div class="list-row">
+      <div class="left">
+        <div class="name">${t}</div>
+        <div class="meta">${s.tradeCount} trades · vol ${s.totalVol}</div>
+      </div>
+      <div class="right">
+        <div class="v ${clsGL(s.netPlPct)}">${sign(s.netPlPct)}${(s.netPlPct*100).toFixed(2)}%</div>
+        <div class="d muted">$${(s.lastPrice||0).toFixed(2)}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// =========== Recent activity ===========
+function renderRecent(trades) {
+  const el = document.getElementById('recent-body');
+  const recent = trades.slice(0, 8);
+  if (!recent.length) {
+    el.innerHTML = '<div class="empty"><div class="emoji">📭</div>No trades yet.</div>';
+    return;
+  }
+  el.innerHTML = recent.map(t => `
+    <div class="list-row">
+      <div class="left">
+        <div class="name"><span class="badge ${t.action.toLowerCase()}">${t.action}</span> ${t.ticker} <span class="muted">×${t.qty}</span></div>
+        <div class="meta">${t.date} · $${t.price.toFixed(2)}</div>
+      </div>
+      <div class="right">
+        <div class="v ${clsGL(t.position_value)}">${t.position_value >= 0 ? '+' : '−'}$${Math.abs(t.position_value).toFixed(0)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// =========== Main tick ===========
+async function tick() {
+  try {
+    const r = await fetch('/api/backtest');
+    const d = await r.json();
+    lastData = d;
+    document.getElementById('updated').textContent = new Date().toLocaleTimeString();
+    renderProgress(d);
+    renderKpis(d.metrics, d.trade_count, d.days_complete);
+    renderTickers(d);
+    buildChart(d.daily);
+    renderTrades(d.trades);
+    renderPerTicker(d);
+    renderRecent(d.trades);
+  } catch (e) {
+    document.getElementById('status-pill').className = 'status-pill err';
+    document.getElementById('status-text').textContent = 'FETCH ERR';
+    console.error(e);
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    document.getElementById('search-input').focus();
+  }
+});
+
+tick();
+setInterval(tick, 15000);
+</script>
+</body>
+</html>

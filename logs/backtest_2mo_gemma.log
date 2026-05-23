@@ -1,0 +1,58 @@
+
+Using specified model: Ollama - gemma4:e4b
+
+Error in LLM call after 3 attempts: [Errno 61] Connection refusedError in LLM call after 3 attempts: [Errno 61] Connection refused
+
+Error in LLM call after 3 attempts: [Errno 61] Connection refusedError in LLM call after 3 attempts: [Errno 61] Connection refused
+
+Error in LLM call after 3 attempts: [Errno 61] Connection refused
+Error in LLM call after 3 attempts: [Errno 61] Connection refused
+Error in LLM call after 3 attempts: [Errno 61] Connection refused
+ ✓ Cathie Wood         [TSLA] Done                                              
+ ✓ Fundamentals Analyst[TSLA] Done                                              
+ ✓ Michael Burry       [TSLA] Done                                              
+ ✓ Peter Lynch         [TSLA] Done                                              
+ ✓ Portfolio Manager   [TSLA] Done                                              
+ ✓ Sentiment Analyst   [TSLA] Done                                              
+ ✓ Stanley Druckenmiller[TSLA] Done                                             
+ ✓ Technical Analyst   [TSLA] Done                                              
+ ✓ Valuation Analyst   [TSLA] Done                                              
+ ✓ Warren Buffett      [TSLA] Done                                              
+ ✓ Risk Management     [TSLA] Done                                              TERM environment variable not set.
+
+PORTFOLIO SUMMARY:
+Cash Balance: $10,000.00
+Total Position Value: $0.00
+Total Value: $10,000.00
+Portfolio Return: +0.00%
+
+
+
++------------+----------+----------+------------+---------+---------------+----------------+------------------+
+| Date       | Ticker   |  Action  |   Quantity |   Price |   Long Shares |   Short Shares |   Position Value |
++============+==========+==========+============+=========+===============+================+==================+
+| 2026-03-20 | AAPL     |   HOLD   |          0 |  247.99 |             0 |              0 |                0 |
++------------+----------+----------+------------+---------+---------------+----------------+------------------+
+| 2026-03-20 | MSFT     |   HOLD   |          0 |  381.87 |             0 |              0 |                0 |
++------------+----------+----------+------------+---------+---------------+----------------+------------------+
+| 2026-03-20 | GOOGL    |   HOLD   |          0 |     301 |             0 |              0 |                0 |
++------------+----------+----------+------------+---------+---------------+----------------+------------------+
+| 2026-03-20 | NVDA     |   HOLD   |          0 |   172.7 |             0 |              0 |                0 |
++------------+----------+----------+------------+---------+---------------+----------------+------------------+
+| 2026-03-20 | TSLA     |   HOLD   |          0 |  367.96 |             0 |              0 |                0 |
++------------+----------+----------+------------+---------+---------------+----------------+------------------+
+
+
+
+
+
+Error in LLM call after 3 attempts: [Errno 61] Connection refused
+Error in LLM call after 3 attempts: [Errno 61] Connection refused
+Error in LLM call after 3 attempts: [Errno 61] Connection refusedError in LLM call after 3 attempts: [Errno 61] Connection refused
+
+Error in LLM call after 3 attempts: [Errno 61] Connection refused
+Rate limited (429). Attempt 1/4. Waiting 60s before retrying...
+Rate limited (429). Attempt 1/4. Waiting 60s before retrying...
+Rate limited (429). Attempt 1/4. Waiting 60s before retrying...
+Rate limited (429). Attempt 1/4. Waiting 60s before retrying...
+Rate limited (429). Attempt 1/4. Waiting 60s before retrying...

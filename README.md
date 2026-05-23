@@ -70,6 +70,36 @@ All pages share a unified dark fintech theme ([`src/dashboard/theme.css`](src/da
 - Zoomable / pannable Chart.js charts
 - `Cmd+K` quick search
 
+### 📊 Backtest dashboard — the headline view
+
+The most useful screen — shows a running backtest in real time, with the equity curve, full trade history (filterable by BUY/SELL/SHORT/COVER), and per-ticker P&L breakdown. Below is the **+6.79% commodities run** from the results table:
+
+![Backtest dashboard](docs/screenshots/backtest.png)
+
+Key elements you can see:
+- **Progress bar** (32 of 44 trading days complete, ETA shown)
+- **KPI strip** — $10,679 total value · +6.79% return · Sharpe 5.19 · 2,112 trades
+- **Equity curve** in purple gradient with $10k initial-capital dashed baseline
+- **Trade history table** with color-coded action badges and per-trade P&L
+- **Per-ticker panel** on the right showing XOM/CVX/NEM/GOLD breakdown
+- **Run config panel** documenting model, capital, range
+
+### 📈 Stocks research dashboard
+
+Yahoo-Finance-style per-ticker view. Pick any symbol, get the price chart with timeframe selector (1M / 3M / 6M / 1Y / 5Y / All), 18-cell key-statistics grid (P/E, P/B, P/S, ROE, ROA, margins, etc.), and live news feed:
+
+![Stocks dashboard — AAPL](docs/screenshots/stocks.png)
+
+The top ticker strip pulls live data for SPY, QQQ, Dow, Russell 2000, Gold, Oil, and 20-Year Treasury — each with a real mini sparkline rendered to canvas.
+
+### 💼 Live portfolio dashboard
+
+Connected to your Alpaca paper account. Shows equity vs S&P 500 normalized to 100, KPIs (equity, cash, day P&L, vs SPY), positions table, and a live news feed for your tracked tickers:
+
+![Live portfolio dashboard](docs/screenshots/portfolio.png)
+
+When `EXECUTION_MODE=paper` and the runner is actively trading, positions populate automatically and the equity curve diverges from SPY based on the strategy's performance.
+
 ---
 
 ## 🚀 Quick start

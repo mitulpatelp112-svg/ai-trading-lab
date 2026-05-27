@@ -284,7 +284,7 @@ _BT_LOG = Path(os.environ.get(
     "BACKTEST_LOG",
     str(Path(__file__).resolve().parents[2] / "logs" / "backtest_commodities.log"),
 ))
-_DATE_RE = re.compile(r"\|\s*(\d{4}-\d{2}-\d{2})\s*\|\s*([A-Z]{1,5})\s*\|\s*(\w+)\s*\|\s*(-?\d+)\s*\|\s*([\d.]+)\s*\|\s*(-?\d+)\s*\|\s*(-?\d+)\s*\|\s*(-?[\d,.]+)\s*\|")
+_DATE_RE = re.compile(r"\|\s*(\d{4}-\d{2}-\d{2})\s*\|\s*([A-Z0-9=.\-]{1,8})\s*\|\s*(\w+)\s*\|\s*(-?\d+)\s*\|\s*([\d.]+)\s*\|\s*(-?\d+)\s*\|\s*(-?\d+)\s*\|\s*(-?[\d,.]+)\s*\|")
 _CASH_RE = re.compile(r"Cash Balance:\s*\$?(-?[\d,.]+)")
 _POS_RE = re.compile(r"Total Position Value:\s*\$?(-?[\d,.]+)")
 _SHARPE_RE = re.compile(r"Sharpe Ratio:\s*(-?[\d.]+)")

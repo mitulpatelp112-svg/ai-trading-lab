@@ -2,229 +2,267 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>AI Hedge Fund — Live Portfolio</title>
+<title>Live Portfolio — AI Trading Lab</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2'><path d='M3 3v18h18'/><path d='m19 9-5 5-4-4-3 3'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/theme.css" />
 </head>
 <body>
 <div class="app">
 
-  <!-- ============== TOP NAV ============== -->
+  <!-- =========== TOP NAV =========== -->
   <nav class="topnav">
     <div class="brand">
-      <span class="dot"></span>
-      <span>AI Hedge Fund</span>
+      <span class="brand-mark">AI</span>
+      <span>Trading Lab</span>
     </div>
     <div class="tabs">
-      <a class="tab active" href="/">📊 Live Portfolio</a>
-      <a class="tab" href="/backtest">🧪 Backtest</a>
-      <a class="tab" href="/stocks">📈 Stocks</a>
-      <a class="tab" data-tip="Coming soon">🤖 Analysts</a>
-      <a class="tab" data-tip="Coming soon">⚙️ Settings</a>
+      <a class="tab active" href="/">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Portfolio
+      </a>
+      <a class="tab" href="/backtest">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31l5.7 8.55a1 1 0 0 1-.83 1.55H4.13a1 1 0 0 1-.83-1.55L9 9.31V2"/><path d="M8 2h8"/></svg>
+        Backtest
+      </a>
+      <a class="tab" href="/stocks">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        Stocks
+      </a>
+      <a class="tab" data-tip="Coming soon">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg>
+        Analysts
+      </a>
     </div>
-    <div class="right">
-      <div class="cmd-k" data-tip="Quick search (coming soon)">
-        <span>Search</span>
+    <div class="topnav-right">
+      <div class="cmd-k" onclick="document.getElementById('search').focus()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Search
         <kbd>⌘K</kbd>
       </div>
-      <div id="status-pill" class="status-pill">
+      <div id="status-pill" class="status">
         <span class="pulse"></span>
         <span id="status-text">CONNECTING</span>
       </div>
     </div>
   </nav>
 
-  <!-- ============== TICKER STRIP ============== -->
+  <!-- =========== TICKER STRIP =========== -->
   <div class="tickerbar" id="tickerbar">
-    <div class="empty muted" style="padding:18px">Loading tickers…</div>
+    <div class="empty" style="padding:14px"><span class="skel skel-line" style="width:120px"></span></div>
   </div>
 
-  <!-- ============== MAIN GRID ============== -->
+  <!-- =========== MAIN =========== -->
   <div class="main-grid">
 
-    <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-label">Portfolio</div>
-        <a class="nav-item active"><span class="icon">📊</span> Overview</a>
-        <a class="nav-item"><span class="icon">📈</span> Positions <span class="badge" id="nav-pos-count">0</span></a>
-        <a class="nav-item"><span class="icon">💱</span> Recent Trades</a>
-        <a class="nav-item"><span class="icon">💰</span> P&L</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-label">Intelligence</div>
-        <a class="nav-item"><span class="icon">🤖</span> Analyst Signals</a>
-        <a class="nav-item"><span class="icon">📰</span> News Feed</a>
-        <a class="nav-item"><span class="icon">⚠️</span> Risk Manager</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-label">System</div>
-        <a class="nav-item"><span class="icon">🔌</span> Data Sources</a>
-        <a class="nav-item"><span class="icon">🧪</span> Backtest Results</a>
-        <a class="nav-item"><span class="icon">📜</span> Activity Log</a>
-      </div>
+      <div class="sidebar-label">Portfolio</div>
+      <a class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Overview
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+        Positions <span class="badge" id="nav-pos-count">0</span>
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        Recent Trades
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        P&L
+      </a>
+
+      <div class="sidebar-label">Intelligence</div>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg>
+        Analyst Signals
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>
+        News Feed
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Risk Manager
+      </a>
+
+      <div class="sidebar-label">System</div>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+        Data Sources
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31l5.7 8.55a1 1 0 0 1-.83 1.55H4.13a1 1 0 0 1-.83-1.55L9 9.31V2"/><path d="M8 2h8"/></svg>
+        Backtest Results
+      </a>
     </aside>
 
-    <!-- CENTER CONTENT -->
     <main class="content">
 
       <div class="page-head">
-        <div>
+        <div class="title">
           <h1>Live Portfolio</h1>
-          <div class="subtitle" id="page-subtitle">Alpaca paper account · updated <span id="updated">—</span></div>
+          <div class="subtitle">Alpaca paper account · updated <span id="updated">—</span></div>
         </div>
         <div class="actions">
-          <button class="btn ghost" onclick="tick()">↻ Refresh</button>
-          <button class="btn">Export</button>
-          <button class="btn primary">+ Trade</button>
+          <button class="btn ghost" onclick="tick()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+            Refresh
+          </button>
+          <button class="btn primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Order
+          </button>
         </div>
       </div>
 
-      <!-- KPI Cards -->
-      <div class="kpi-grid">
+      <!-- KPI bento - bordered grid, labels above tabular numbers, no card chrome per density -->
+      <div class="kpi-grid-bordered">
         <div class="kpi">
-          <div class="label">Equity <span data-tip="Total account value: cash + market value of positions">ⓘ</span></div>
-          <div class="value" id="kpi-equity">—</div>
-          <div class="sub" id="kpi-equity-sub">since inception —</div>
+          <div class="kpi-label">Equity</div>
+          <div class="kpi-value" id="kpi-equity">—</div>
+          <div class="kpi-sub" id="kpi-equity-sub">since inception —</div>
         </div>
         <div class="kpi">
-          <div class="label">Cash</div>
-          <div class="value" id="kpi-cash">—</div>
-          <div class="sub" id="kpi-cash-sub">—</div>
+          <div class="kpi-label">Cash</div>
+          <div class="kpi-value" id="kpi-cash">—</div>
+          <div class="kpi-sub" id="kpi-cash-sub">—</div>
         </div>
         <div class="kpi">
-          <div class="label">Day P&L</div>
-          <div class="value" id="kpi-daypl">—</div>
-          <div class="sub" id="kpi-daypl-sub">—</div>
+          <div class="kpi-label">Day P&L</div>
+          <div class="kpi-value" id="kpi-daypl">—</div>
+          <div class="kpi-sub" id="kpi-daypl-sub">—</div>
         </div>
         <div class="kpi">
-          <div class="label">vs S&P 500</div>
-          <div class="value" id="kpi-vs-spy">—</div>
-          <div class="sub" id="kpi-vs-spy-sub">—</div>
+          <div class="kpi-label">vs S&P 500</div>
+          <div class="kpi-value" id="kpi-vs-spy">—</div>
+          <div class="kpi-sub" id="kpi-vs-spy-sub">—</div>
         </div>
         <div class="kpi">
-          <div class="label">Positions</div>
-          <div class="value" id="kpi-positions">0</div>
-          <div class="sub">tracked tickers</div>
+          <div class="kpi-label">Positions</div>
+          <div class="kpi-value" id="kpi-positions">0</div>
+          <div class="kpi-sub">tracked tickers</div>
         </div>
       </div>
 
       <!-- Chart -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>📈 Portfolio vs S&P 500 <span class="muted" style="font-weight:400;font-size:11px">normalized to 100</span></h2>
-          <div class="right">
-            <div class="segmented" id="chart-range">
+      <div class="card">
+        <div class="card-head">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Portfolio vs S&P 500
+            <span class="meta">normalized to 100</span>
+          </h2>
+          <div class="actions">
+            <div class="segmented">
               <button data-range="1M">1M</button>
               <button data-range="3M">3M</button>
               <button data-range="6M">6M</button>
               <button data-range="1Y" class="active">1Y</button>
               <button data-range="ALL">All</button>
             </div>
-            <button class="btn ghost" onclick="if(chart)chart.resetZoom()" data-tip="Reset zoom">⤢</button>
+            <button class="btn ghost" onclick="if(chart)chart.resetZoom()" data-tip="Reset zoom">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            </button>
           </div>
         </div>
-        <div class="panel-body" style="height:340px">
+        <div class="card-body" style="height:340px">
           <div class="chart-host"><canvas id="chart"></canvas></div>
         </div>
       </div>
 
-      <!-- Positions table -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>📊 Open Positions</h2>
-          <div class="right">
-            <span class="muted" style="font-size:11px" id="positions-summary"></span>
-          </div>
+      <!-- Positions -->
+      <div class="card">
+        <div class="card-head">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+            Open Positions
+          </h2>
+          <span class="meta" id="positions-summary"></span>
         </div>
-        <div class="panel-body flush" id="positions-body">
+        <div class="card-body flush" id="positions-body">
           <div class="empty">
-            <div class="emoji">📭</div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             <div class="title">No open positions</div>
-            <div>System is in <strong style="color:var(--accent)">dry-run</strong> mode — set <code style="background:var(--bg-base);padding:1px 6px;border-radius:4px">EXECUTION_MODE=paper</code> in .env to start trading</div>
+            <div>Running in <span class="badge accent">dry-run</span> mode. Set <code style="background:var(--bg-base);padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:11px">EXECUTION_MODE=paper</code> in .env to begin trading.</div>
           </div>
         </div>
       </div>
 
     </main>
 
-    <!-- RIGHT SIDEBAR -->
     <aside class="rightbar">
+      <input id="search" type="text" class="search-input" placeholder="Search ticker, news, trade…" />
 
-      <input type="text" class="search-input" placeholder="Search ticker, news, or trade…" id="search-input" />
-
-      <!-- Account snapshot -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>👤 Account</h2>
-        </div>
-        <div class="panel-body">
-          <div class="list-row">
-            <div class="left">
-              <div class="name">Status</div>
-              <div class="meta">Alpaca paper trading</div>
+      <div class="card dense">
+        <div class="card-head"><h2>Account</h2></div>
+        <div class="card-body">
+          <div class="list">
+            <div class="list-row">
+              <div class="left">
+                <div class="name">Status</div>
+                <div class="meta">Alpaca paper trading</div>
+              </div>
+              <div class="right">
+                <span class="status" id="account-status"><span class="pulse"></span>—</span>
+              </div>
             </div>
-            <div class="right">
-              <span class="status-pill" id="account-status"><span class="pulse"></span>—</span>
+            <div class="list-row">
+              <div class="left">
+                <div class="name">Buying Power</div>
+                <div class="meta">Available to deploy</div>
+              </div>
+              <div class="right"><div class="v" id="account-bp">—</div></div>
             </div>
-          </div>
-          <div class="list-row">
-            <div class="left">
-              <div class="name">Buying Power</div>
-              <div class="meta">Available to deploy</div>
-            </div>
-            <div class="right">
-              <div class="v" id="account-bp">—</div>
-            </div>
-          </div>
-          <div class="list-row">
-            <div class="left">
-              <div class="name">Total Return</div>
-              <div class="meta">Since inception</div>
-            </div>
-            <div class="right">
-              <div class="v" id="account-return">—</div>
+            <div class="list-row">
+              <div class="left">
+                <div class="name">Total Return</div>
+                <div class="meta">Since inception</div>
+              </div>
+              <div class="right"><div class="v" id="account-return">—</div></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- News -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>📰 News Feed</h2>
-          <div class="right"><span class="muted" style="font-size:11px" id="news-count"></span></div>
+      <div class="card dense">
+        <div class="card-head">
+          <h2>News Feed</h2>
+          <span class="meta" id="news-count"></span>
         </div>
-        <div class="panel-body" id="news-body" style="max-height:480px;overflow-y:auto">
-          <div class="empty"><div class="emoji">⏳</div>Loading news…</div>
-        </div>
-      </div>
-
-      <!-- System status -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>🔧 System</h2>
-        </div>
-        <div class="panel-body">
-          <div class="list-row">
-            <div class="left"><div class="name">Data Provider</div></div>
-            <div class="right"><span class="badge long">Finnhub + Alpaca</span></div>
-          </div>
-          <div class="list-row">
-            <div class="left"><div class="name">Execution</div><div class="meta">Order mode</div></div>
-            <div class="right"><span class="badge hold">Dry-run</span></div>
-          </div>
-          <div class="list-row">
-            <div class="left"><div class="name">Refresh</div><div class="meta">Auto-poll</div></div>
-            <div class="right"><div class="v">30s</div></div>
+        <div class="card-body" id="news-body" style="max-height:520px;overflow-y:auto">
+          <div>
+            <div class="skel skel-row"></div>
+            <div class="skel skel-row"></div>
+            <div class="skel skel-row"></div>
           </div>
         </div>
       </div>
 
+      <div class="card dense">
+        <div class="card-head"><h2>System</h2></div>
+        <div class="card-body">
+          <div class="list">
+            <div class="list-row">
+              <div class="left"><div class="name">Data Provider</div></div>
+              <div class="right"><span class="badge accent">yfinance</span></div>
+            </div>
+            <div class="list-row">
+              <div class="left"><div class="name">Execution</div><div class="meta">Order mode</div></div>
+              <div class="right"><span class="badge neutral">dry-run</span></div>
+            </div>
+            <div class="list-row">
+              <div class="left"><div class="name">Refresh</div><div class="meta">Auto-poll</div></div>
+              <div class="right"><div class="v">30s</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </aside>
 
   </div>
@@ -235,189 +273,128 @@
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 <script>
+const ACCENT = '#10b981';
+const DOWN = '#f43f5e';
+
 const fmtUsd = (n, max=2) => n == null ? '—' : new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:max }).format(n);
 const fmtUsd0 = n => fmtUsd(n, 0);
 const fmtPct = n => n == null ? '—' : (n*100).toFixed(2) + '%';
 const sign = n => n == null ? '' : (n > 0 ? '+' : '');
-const clsGL = n => n == null ? '' : (n >= 0 ? 'gain' : 'loss');
-const deltaCls = n => n == null ? '' : (n >= 0 ? 'up' : 'down');
+const cls = n => n == null ? '' : (n >= 0 ? 'up' : 'dn');
 
 let chart = null;
-let lastState = null;
 
-// ============== Sparkline rendering ==============
-function spark(canvas, values, color) {
+// Sparkline
+function spark(canvas, values, isUp) {
   if (!canvas || !values?.length) return;
   const ctx = canvas.getContext('2d');
-  const w = canvas.width = canvas.offsetWidth * 2;
-  const h = canvas.height = canvas.offsetHeight * 2;
+  canvas.width = canvas.offsetWidth * 2;
+  canvas.height = canvas.offsetHeight * 2;
   ctx.scale(2, 2);
   const W = canvas.offsetWidth, H = canvas.offsetHeight;
   const min = Math.min(...values), max = Math.max(...values);
   const range = max - min || 1;
+  const color = isUp ? ACCENT : DOWN;
   ctx.beginPath();
   ctx.strokeStyle = color;
   ctx.lineWidth = 1.5;
-  ctx.lineJoin = 'round';
   values.forEach((v, i) => {
     const x = (i / (values.length-1)) * W;
     const y = H - ((v-min)/range) * H * 0.85 - H*0.075;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   });
   ctx.stroke();
-  // Fill area
-  ctx.lineTo(W, H);
-  ctx.lineTo(0, H);
-  ctx.closePath();
-  ctx.fillStyle = color + '22';
-  ctx.fill();
 }
 
-// ============== Ticker strip ==============
 function renderTickers(positions, history) {
   const bar = document.getElementById('tickerbar');
-  // Always show portfolio as the first pill
   const baseE = (history.equity || []).find(v => v > 0);
   const lastE = (history.equity || []).slice().reverse().find(v => v > 0);
   const portRet = baseE && lastE ? ((lastE - baseE) / baseE) : 0;
   const portVals = (history.equity || []).filter(v => v > 0);
 
-  const pills = [];
-  pills.push({
-    sym: 'PORTFOLIO',
-    price: lastE || 0,
-    chg: portRet,
-    vals: portVals,
-  });
-
-  positions.forEach(p => {
-    pills.push({
-      sym: p.symbol,
-      price: p.current_price,
-      chg: p.unrealized_plpc,
-      vals: null,
-    });
-  });
-
-  // Add some watchlist tickers (placeholder mini sparks)
-  ['SPY','QQQ','DIA'].forEach(s => {
-    pills.push({ sym: s, price: null, chg: null, vals: null, placeholder: true });
-  });
+  const pills = [{ sym: 'Portfolio', price: lastE || 0, chg: portRet, vals: portVals }];
+  positions.forEach(p => pills.push({ sym: p.symbol, price: p.current_price, chg: p.unrealized_plpc, vals: null }));
+  ['SPY','QQQ','DIA'].forEach(s => pills.push({ sym: s, price: null, chg: null, vals: null }));
 
   bar.innerHTML = pills.map((p, i) => {
-    const color = p.chg == null ? 'var(--text-tertiary)' : (p.chg >= 0 ? 'var(--gain)' : 'var(--loss)');
+    const color = p.chg == null ? 'var(--text-tertiary)' : (p.chg >= 0 ? 'var(--up)' : 'var(--down)');
     const chgTxt = p.chg == null ? '—' : `${sign(p.chg)}${(p.chg*100).toFixed(2)}%`;
-    const priceTxt = p.price == null ? '—' : (p.sym === 'PORTFOLIO' ? fmtUsd0(p.price) : '$' + p.price.toFixed(2));
-    return `<div class="ticker-pill" data-i="${i}">
+    const priceTxt = p.price == null ? '—' : (p.sym === 'Portfolio' ? fmtUsd0(p.price) : '$' + p.price.toFixed(2));
+    return `<div class="tile" data-i="${i}">
       <div class="sym">${p.sym}</div>
       <div class="row">
         <span class="price">${priceTxt}</span>
         <span class="chg" style="color:${color}">${chgTxt}</span>
       </div>
-      <canvas class="spark" id="spark-${i}"></canvas>
+      <canvas class="spark" id="spk-${i}"></canvas>
     </div>`;
   }).join('');
-
-  // Draw sparklines after DOM update
   requestAnimationFrame(() => {
     pills.forEach((p, i) => {
-      const cv = document.getElementById('spark-'+i);
-      if (cv && p.vals && p.vals.length > 2) {
-        spark(cv, p.vals, p.chg >= 0 ? '#10b981' : '#ef4444');
-      }
+      const cv = document.getElementById('spk-'+i);
+      if (cv && p.vals && p.vals.length > 2) spark(cv, p.vals, p.chg >= 0);
     });
   });
 }
 
-// ============== Chart ==============
 function buildChart(history, spy) {
   const allTs = (history.timestamps || []).map(s => new Date(s * 1000));
   const allEq = history.equity || [];
   const pairs = allTs.map((t, i) => ({ t, e: allEq[i] })).filter(p => p.e > 0);
-
   const host = document.getElementById('chart');
+  const ctx = host.getContext('2d');
+  if (chart) chart.destroy();
+
   if (!pairs.length) {
-    const ctx = host.getContext('2d');
-    if (chart) chart.destroy();
     ctx.clearRect(0, 0, host.width, host.height);
-    ctx.fillStyle = '#6b7280';
-    ctx.font = '13px Inter';
+    ctx.fillStyle = '#71717a';
+    ctx.font = '13px Geist, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('No portfolio history yet — first trading session pending.', host.width / 2, host.height / 2);
     return;
   }
 
   const ts = pairs.map(p => p.t);
-  const equity = pairs.map(p => p.e);
-  const baseE = equity[0];
-  const eqNorm = equity.map(v => (v / baseE) * 100);
+  const eqNorm = pairs.map(p => (p.e / pairs[0].e) * 100);
 
   const spyMap = new Map();
   for (const b of (spy || [])) spyMap.set(b.t.slice(0,10), b.c);
   let baseSpy = null;
   const spyNorm = ts.map(d => {
-    const key = d.toISOString().slice(0,10);
-    const c = spyMap.get(key);
+    const k = d.toISOString().slice(0,10);
+    const c = spyMap.get(k);
     if (c == null) return null;
     if (baseSpy == null) baseSpy = c;
     return (c / baseSpy) * 100;
   });
 
-  // Gradient fill
-  const gradCtx = host.getContext('2d');
-  const grad = gradCtx.createLinearGradient(0, 0, 0, 340);
-  grad.addColorStop(0, 'rgba(139,92,246,0.35)');
-  grad.addColorStop(1, 'rgba(139,92,246,0.0)');
+  const grad = ctx.createLinearGradient(0, 0, 0, 340);
+  grad.addColorStop(0, 'rgba(16, 185, 129, 0.18)');
+  grad.addColorStop(1, 'rgba(16, 185, 129, 0)');
 
-  if (chart) chart.destroy();
-  chart = new Chart(gradCtx, {
+  chart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: ts,
       datasets: [
-        {
-          label: 'Portfolio',
-          data: eqNorm,
-          borderColor: '#8b5cf6',
-          backgroundColor: grad,
-          tension: 0.3,
-          pointRadius: eqNorm.length < 5 ? 4 : 0,
-          pointHoverRadius: 5,
-          borderWidth: 2.5,
-          fill: true,
-        },
-        {
-          label: 'S&P 500',
-          data: spyNorm,
-          borderColor: '#6b7280',
-          borderDash: [4, 4],
-          tension: 0.3,
-          pointRadius: 0,
-          borderWidth: 1.5,
-          fill: false,
-        }
+        { label: 'Portfolio', data: eqNorm, borderColor: ACCENT, backgroundColor: grad,
+          tension: 0.3, pointRadius: eqNorm.length < 5 ? 3 : 0, pointHoverRadius: 5,
+          borderWidth: 2, fill: true },
+        { label: 'S&P 500', data: spyNorm, borderColor: '#71717a', borderDash: [4,4],
+          tension: 0.3, pointRadius: 0, borderWidth: 1.25, fill: false },
       ]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
+      responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
-        legend: {
-          align: 'end',
-          labels: { color: '#98a2b3', boxWidth: 8, boxHeight: 8, padding: 16, font: { size: 11 } },
-        },
+        legend: { align: 'end', labels: { color: '#a1a1aa', boxWidth: 8, boxHeight: 8, padding: 16, font: { size: 11, family: 'Geist' } } },
         tooltip: {
-          backgroundColor: '#1f2230',
-          borderColor: 'rgba(255,255,255,0.12)',
-          borderWidth: 1,
-          padding: 10,
-          titleColor: '#fff',
-          bodyColor: '#98a2b3',
-          callbacks: {
-            label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}`,
-          }
+          backgroundColor: '#1f1f23', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, padding: 10,
+          titleColor: '#fff', bodyColor: '#a1a1aa',
+          titleFont: { family: 'Geist', size: 12 }, bodyFont: { family: 'Geist Mono', size: 11 },
+          callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y.toFixed(2)}` }
         },
         zoom: {
           zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' },
@@ -425,35 +402,28 @@ function buildChart(history, spy) {
         }
       },
       scales: {
-        x: {
-          type: 'time',
-          time: { unit: ts.length <= 10 ? 'day' : 'week' },
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: { color: '#6b7280', font: { size: 10 } },
-          border: { display: false }
-        },
-        y: {
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: { color: '#6b7280', font: { size: 10 }, callback: v => v.toFixed(1) },
-          border: { display: false }
-        }
+        x: { type: 'time', time: { unit: ts.length <= 10 ? 'day' : 'week' },
+             grid: { color: 'rgba(255,255,255,0.03)' },
+             ticks: { color: '#71717a', font: { size: 10, family: 'Geist Mono' } },
+             border: { display: false } },
+        y: { grid: { color: 'rgba(255,255,255,0.03)' },
+             ticks: { color: '#71717a', font: { size: 10, family: 'Geist Mono' }, callback: v => v.toFixed(1) },
+             border: { display: false } }
       }
     }
   });
 
-  // KPI: vs SPY
   const lastEq = eqNorm[eqNorm.length - 1];
   const lastSpy = [...spyNorm].reverse().find(v => v != null);
   if (lastEq != null && lastSpy != null) {
     const diff = (lastEq - lastSpy) / 100;
     const el = document.getElementById('kpi-vs-spy');
     el.textContent = sign(diff) + fmtPct(diff);
-    el.className = 'value ' + clsGL(diff);
+    el.className = 'kpi-value ' + cls(diff);
     document.getElementById('kpi-vs-spy-sub').textContent = `port ${lastEq.toFixed(1)} · spy ${lastSpy.toFixed(1)}`;
   }
 }
 
-// ============== Positions ==============
 function renderPositions(positions) {
   const el = document.getElementById('positions-body');
   document.getElementById('nav-pos-count').textContent = positions.length;
@@ -462,9 +432,9 @@ function renderPositions(positions) {
   if (!positions.length) {
     document.getElementById('positions-summary').textContent = '';
     el.innerHTML = `<div class="empty">
-      <div class="emoji">📭</div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
       <div class="title">No open positions</div>
-      <div>System is in <strong style="color:var(--accent)">dry-run</strong> mode — set <code style="background:var(--bg-base);padding:1px 6px;border-radius:4px">EXECUTION_MODE=paper</code> in .env to start trading</div>
+      <div>Running in <span class="badge accent">dry-run</span> mode. Set <code style="background:var(--bg-base);padding:1px 6px;border-radius:4px;font-family:var(--font-mono);font-size:11px">EXECUTION_MODE=paper</code> in .env to begin trading.</div>
     </div>`;
     return;
   }
@@ -476,49 +446,35 @@ function renderPositions(positions) {
   const rows = positions.map(p => {
     const sideBadge = p.side === 'long' ? '<span class="badge long">LONG</span>' : '<span class="badge short">SHORT</span>';
     return `<tr>
-      <td class="left">
-        <div style="display:flex;align-items:center;gap:8px">
-          <strong>${p.symbol}</strong>
-          ${sideBadge}
-        </div>
-      </td>
+      <td class="left"><div style="display:flex;align-items:center;gap:8px"><strong>${p.symbol}</strong> ${sideBadge}</div></td>
       <td>${p.qty.toFixed(0)}</td>
       <td>${fmtUsd(p.avg_entry_price)}</td>
       <td>${fmtUsd(p.current_price)}</td>
       <td>${fmtUsd0(p.market_value)}</td>
-      <td class="${clsGL(p.unrealized_pl)}">${sign(p.unrealized_pl)}${fmtUsd(p.unrealized_pl)}</td>
-      <td class="${clsGL(p.unrealized_plpc)}">${sign(p.unrealized_plpc)}${fmtPct(p.unrealized_plpc)}</td>
+      <td class="${cls(p.unrealized_pl)}">${sign(p.unrealized_pl)}${fmtUsd(p.unrealized_pl)}</td>
+      <td class="${cls(p.unrealized_plpc)}">${sign(p.unrealized_plpc)}${fmtPct(p.unrealized_plpc)}</td>
     </tr>`;
   }).join('');
 
-  el.innerHTML = `<table class="pro">
-    <thead>
-      <tr>
-        <th class="left">Symbol</th>
-        <th>Qty</th>
-        <th>Entry</th>
-        <th>Last</th>
-        <th>Mkt Value</th>
-        <th>Unrealized P&L</th>
-        <th>%</th>
-      </tr>
-    </thead>
+  el.innerHTML = `<table class="lab">
+    <thead><tr>
+      <th class="left">Symbol</th><th>Qty</th><th>Entry</th><th>Last</th><th>Mkt Value</th><th>Unrealized P&L</th><th>%</th>
+    </tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
 }
 
-// ============== News ==============
 function renderNews(news) {
   const el = document.getElementById('news-body');
   document.getElementById('news-count').textContent = news.length ? `${news.length} items` : '';
   if (!news.length) {
-    el.innerHTML = '<div class="empty"><div class="emoji">📭</div>No news yet.</div>';
+    el.innerHTML = '<div class="empty"><div class="title">No news yet</div></div>';
     return;
   }
   el.innerHTML = news.map(n => {
     const t = n.created_at ? new Date(n.created_at) : null;
     const ago = t ? timeAgo(t) : '';
-    const tags = (n.symbols || []).slice(0,3).map(s => `<span class="tag">${s}</span>`).join('');
+    const tags = (n.symbols || []).slice(0,3).map(s => `<span class="tag">${s}</span>`).join(' ');
     return `<a class="news-item" href="${n.url || '#'}" target="_blank" rel="noopener">
       <div class="title">${n.headline || '(no title)'}</div>
       <div class="meta">${tags} <span>${n.source || ''}</span> · <span>${ago}</span></div>
@@ -534,7 +490,6 @@ function timeAgo(date) {
   return Math.floor(s/86400) + 'd ago';
 }
 
-// ============== KPI ==============
 function renderKpis(account, history) {
   document.getElementById('kpi-equity').textContent = fmtUsd0(account.equity);
   document.getElementById('kpi-cash').textContent = fmtUsd0(account.cash);
@@ -545,7 +500,7 @@ function renderKpis(account, history) {
   const dayPct = account.last_equity ? dayPl / account.last_equity : null;
   const elPl = document.getElementById('kpi-daypl');
   elPl.textContent = sign(dayPl) + fmtUsd(dayPl);
-  elPl.className = 'value ' + clsGL(dayPl);
+  elPl.className = 'kpi-value ' + cls(dayPl);
   document.getElementById('kpi-daypl-sub').textContent = dayPct == null ? '' : sign(dayPct) + fmtPct(dayPct);
 
   const base = history.base_value;
@@ -553,33 +508,28 @@ function renderKpis(account, history) {
     const total = (account.equity - base) / base;
     const sub = document.getElementById('kpi-equity-sub');
     sub.textContent = `since inception ${sign(total)}${fmtPct(total)}`;
-    sub.className = 'sub ' + clsGL(total);
+    sub.className = 'kpi-sub ' + cls(total);
     const accRet = document.getElementById('account-return');
     accRet.textContent = `${sign(total)}${fmtPct(total)}`;
-    accRet.className = 'v ' + clsGL(total);
+    accRet.className = 'v ' + cls(total);
   }
 
-  // Status pill in topnav
   const pill = document.getElementById('status-pill');
   const pillText = document.getElementById('status-text');
   if (account.status === 'ACTIVE') {
-    pill.className = 'status-pill';
+    pill.className = 'status';
     pillText.textContent = 'LIVE';
   } else if (account.status) {
-    pill.className = 'status-pill warn';
+    pill.className = 'status warn';
     pillText.textContent = account.status;
   }
-
-  const accStatus = document.getElementById('account-status');
-  accStatus.innerHTML = `<span class="pulse"></span>${account.status || '—'}`;
+  document.getElementById('account-status').innerHTML = `<span class="pulse"></span>${account.status || '—'}`;
 }
 
-// ============== Main tick ==============
 async function tick() {
   try {
     const r = await fetch('/api/state');
     const s = await r.json();
-    lastState = s;
     document.getElementById('updated').textContent = new Date().toLocaleTimeString();
     renderTickers(s.positions, s.history);
     renderKpis(s.account, s.history);
@@ -587,17 +537,16 @@ async function tick() {
     renderPositions(s.positions);
     renderNews(s.news);
   } catch (e) {
-    document.getElementById('status-pill').className = 'status-pill err';
+    document.getElementById('status-pill').className = 'status err';
     document.getElementById('status-text').textContent = 'OFFLINE';
     console.error(e);
   }
 }
 
-// Cmd+K shortcut
 document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
-    document.getElementById('search-input').focus();
+    document.getElementById('search').focus();
   }
 });
 

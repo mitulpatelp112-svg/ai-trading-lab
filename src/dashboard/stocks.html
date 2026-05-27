@@ -2,129 +2,127 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>AI Hedge Fund — Stocks</title>
+<title>Stocks — AI Trading Lab</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2'><polyline points='22 7 13.5 15.5 8.5 10.5 2 17'/><polyline points='16 7 22 7 22 13'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/theme.css" />
 <style>
-  /* Stocks-specific tweaks */
+  /* Hero block — left-aligned, asymmetric per Rule 3 anti-center bias */
   .stock-hero {
     display: grid;
     grid-template-columns: auto 1fr auto;
-    gap: var(--space-5);
+    gap: 28px;
     align-items: center;
-    padding: 22px 24px;
+    padding: 26px 28px;
     background: linear-gradient(135deg, var(--bg-surface), var(--bg-surface-2));
     border: 1px solid var(--border-soft);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-card);
   }
-  .stock-symbol {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .stock-symbol .icon {
+  .stock-mark {
     width: 56px; height: 56px;
     border-radius: 14px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+    background: linear-gradient(135deg, var(--accent), #059669);
     color: white;
     display: flex; align-items: center; justify-content: center;
-    font-weight: 700;
-    font-size: 20px;
+    font-weight: 600;
+    font-size: 18px;
     letter-spacing: -0.02em;
-    box-shadow: var(--shadow-glow);
+    font-family: var(--font-mono);
   }
-  .stock-symbol .ticker {
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+  .stock-ident { display: flex; flex-direction: column; gap: 2px; }
+  .stock-ticker {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
   }
-  .stock-symbol .name {
+  .stock-name {
     color: var(--text-secondary);
     font-size: 13px;
-    margin-top: 2px;
   }
   .stock-price {
-    text-align: center;
+    text-align: right;
   }
   .stock-price .value {
     font-family: var(--font-mono);
-    font-size: 36px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
     font-feature-settings: 'tnum';
+    line-height: 1;
   }
   .stock-price .delta {
     font-family: var(--font-mono);
-    font-size: 14px;
-    margin-top: 4px;
+    font-size: 13px;
+    margin-top: 6px;
     font-feature-settings: 'tnum';
     display: inline-flex; align-items: center; gap: 6px;
+    justify-content: flex-end;
   }
   .stock-actions { display: flex; gap: 8px; }
 
-  .stats-grid {
+  /* Stats grid — dense, hairline-divided, no card chrome per Rule 4 */
+  .stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1px;
-    background: var(--border-soft);
-    border-radius: var(--radius-md);
-    overflow: hidden;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    border-top: 1px solid var(--border-soft);
+    border-left: 1px solid var(--border-soft);
   }
-  .stat-cell {
+  .stat {
+    padding: 14px 18px;
     background: var(--bg-surface);
-    padding: 12px 16px;
+    border-right: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
     transition: background 150ms;
+    cursor: default;
   }
-  .stat-cell:hover { background: var(--bg-hover); }
-  .stat-cell .label {
+  .stat:hover { background: var(--bg-hover); }
+  .stat-label {
     color: var(--text-tertiary);
     font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
-  .stat-cell .value {
+  .stat-value {
     font-family: var(--font-mono);
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     margin-top: 4px;
     font-feature-settings: 'tnum';
+    letter-spacing: -0.02em;
   }
 
-  .ticker-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 8px;
-  }
   .ticker-card {
     padding: 10px 12px;
-    background: var(--bg-base);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius-sm);
+    border-bottom: 1px solid var(--border-soft);
     cursor: pointer;
-    transition: all 150ms;
+    transition: all 100ms;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
+  .ticker-card:last-child { border-bottom: 0; }
   .ticker-card:hover {
-    background: var(--bg-hover);
-    border-color: var(--accent);
-    transform: translateY(-1px);
+    background: var(--bg-surface);
+    padding-left: 16px;
   }
   .ticker-card.active {
-    background: var(--accent-soft);
-    border-color: var(--accent);
+    background: var(--bg-surface);
+    box-shadow: inset 3px 0 0 var(--accent);
   }
   .ticker-card .sym {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 13px;
+    letter-spacing: -0.01em;
   }
   .ticker-card .nm {
     font-size: 10px;
     color: var(--text-tertiary);
-    margin-top: 2px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -133,11 +131,11 @@
   .price-arrow {
     display: inline-block;
     width: 0; height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
   }
-  .price-arrow.up { border-bottom: 8px solid var(--gain); }
-  .price-arrow.down { border-top: 8px solid var(--loss); }
+  .price-arrow.up { border-bottom: 7px solid var(--up); }
+  .price-arrow.down { border-top: 7px solid var(--down); }
 </style>
 </head>
 <body>
@@ -145,80 +143,101 @@
 
   <nav class="topnav">
     <div class="brand">
-      <span class="dot"></span>
-      <span>AI Hedge Fund</span>
+      <span class="brand-mark">AI</span>
+      <span>Trading Lab</span>
     </div>
     <div class="tabs">
-      <a class="tab" href="/">📊 Live Portfolio</a>
-      <a class="tab" href="/backtest">🧪 Backtest</a>
-      <a class="tab active" href="/stocks">📈 Stocks</a>
-      <a class="tab" data-tip="Coming soon">🤖 Analysts</a>
-      <a class="tab" data-tip="Coming soon">⚙️ Settings</a>
+      <a class="tab" href="/">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Portfolio
+      </a>
+      <a class="tab" href="/backtest">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31l5.7 8.55a1 1 0 0 1-.83 1.55H4.13a1 1 0 0 1-.83-1.55L9 9.31V2"/><path d="M8 2h8"/></svg>
+        Backtest
+      </a>
+      <a class="tab active" href="/stocks">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        Stocks
+      </a>
+      <a class="tab" data-tip="Coming soon">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg>
+        Analysts
+      </a>
     </div>
-    <div class="right">
-      <div class="cmd-k" data-tip="Quick search (⌘K)" onclick="document.getElementById('ticker-search').focus()">
-        <span>Search Ticker</span><kbd>⌘K</kbd>
+    <div class="topnav-right">
+      <div class="cmd-k" onclick="document.getElementById('search').focus()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Search Ticker
+        <kbd>⌘K</kbd>
       </div>
-      <div id="status-pill" class="status-pill">
+      <div id="status-pill" class="status">
         <span class="pulse"></span>
-        <span id="status-text">CONNECTING</span>
+        <span id="status-text">LOADING</span>
       </div>
     </div>
   </nav>
 
-  <!-- TICKER STRIP (market indices) -->
+  <!-- Market indices strip -->
   <div class="tickerbar" id="indices-bar">
-    <div class="empty muted" style="padding:18px">Loading indices…</div>
+    <div class="empty" style="padding:14px"><span class="skel skel-line" style="width:120px"></span></div>
   </div>
 
   <div class="main-grid">
 
-    <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-label">View</div>
-        <a class="nav-item active"><span class="icon">📊</span> Summary</a>
-        <a class="nav-item"><span class="icon">📈</span> Chart</a>
-        <a class="nav-item"><span class="icon">📰</span> News</a>
-        <a class="nav-item"><span class="icon">📜</span> Historical</a>
-        <a class="nav-item"><span class="icon">🤖</span> Analyst Signals</a>
-        <a class="nav-item"><span class="icon">🎯</span> Statistics</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-label">Watchlist</div>
-        <div id="watchlist" style="padding: 0 4px">
-          <div class="empty muted" style="padding:12px;font-size:11px">Loading…</div>
-        </div>
-      </div>
+      <div class="sidebar-label">View</div>
+      <a class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Summary
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Chart
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>
+        News
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Historical
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg>
+        Analyst Signals
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        Statistics
+      </a>
+
+      <div class="sidebar-label">Watchlist</div>
+      <div id="watchlist"></div>
     </aside>
 
-    <!-- CENTER -->
     <main class="content">
 
       <!-- Hero -->
       <div class="stock-hero" id="hero">
-        <div class="stock-symbol">
-          <div class="icon" id="hero-icon">—</div>
-          <div>
-            <div class="ticker" id="hero-ticker">—</div>
-            <div class="name" id="hero-name">Select a ticker</div>
-          </div>
+        <div class="stock-mark" id="hero-mark">—</div>
+        <div class="stock-ident">
+          <div class="stock-ticker" id="hero-ticker">—</div>
+          <div class="stock-name" id="hero-name">Select a ticker</div>
         </div>
         <div class="stock-price">
           <div class="value" id="hero-price">—</div>
           <div class="delta" id="hero-delta"><span class="muted">—</span></div>
         </div>
-        <div class="stock-actions">
-          <button class="btn" data-tip="Add to watchlist">★ Watch</button>
-          <button class="btn primary" data-tip="Place a paper trade">+ Trade</button>
-        </div>
       </div>
 
       <!-- Chart -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2 id="chart-title">Price Chart</h2>
-          <div class="right">
+      <div class="card">
+        <div class="card-head">
+          <h2 id="chart-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Price Chart
+          </h2>
+          <div class="actions">
             <div class="segmented" id="range-picker">
               <button data-range="1M">1M</button>
               <button data-range="3M" class="active">3M</button>
@@ -227,62 +246,65 @@
               <button data-range="5Y">5Y</button>
               <button data-range="ALL">All</button>
             </div>
-            <button class="btn ghost" onclick="if(chart)chart.resetZoom()" data-tip="Reset zoom">⤢</button>
+            <button class="btn ghost" onclick="if(chart)chart.resetZoom()" data-tip="Reset zoom">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            </button>
           </div>
         </div>
-        <div class="panel-body" style="height:360px">
+        <div class="card-body" style="height:360px">
           <div class="chart-host"><canvas id="chart"></canvas></div>
         </div>
       </div>
 
-      <!-- Stats grid -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>📐 Key Statistics</h2>
-          <div class="right"><span class="muted" style="font-size:11px">trailing fundamentals via Finnhub</span></div>
+      <!-- Stats -->
+      <div class="card">
+        <div class="card-head">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+            Key Statistics
+          </h2>
+          <span class="meta">trailing fundamentals via Finnhub</span>
         </div>
-        <div class="panel-body flush">
-          <div class="stats-grid" id="stats-grid">
-            <div class="stat-cell"><div class="label">Loading…</div><div class="value">—</div></div>
+        <div class="card-body flush">
+          <div class="stats" id="stats">
+            <div class="stat"><div class="stat-label">Loading…</div><div class="stat-value">—</div></div>
           </div>
         </div>
       </div>
 
       <!-- News -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>📰 News</h2>
-          <div class="right"><span class="muted" style="font-size:11px" id="news-meta"></span></div>
+      <div class="card">
+        <div class="card-head">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>
+            News
+          </h2>
+          <span class="meta" id="news-meta"></span>
         </div>
-        <div class="panel-body" id="news-body">
-          <div class="empty"><div class="emoji">⏳</div>Loading news…</div>
+        <div class="card-body" id="news-body">
+          <div>
+            <div class="skel skel-row"></div>
+            <div class="skel skel-row"></div>
+            <div class="skel skel-row"></div>
+          </div>
         </div>
       </div>
 
     </main>
 
-    <!-- RIGHT SIDEBAR -->
     <aside class="rightbar">
 
-      <input type="text" id="ticker-search" class="search-input" placeholder="Search ticker (AAPL, TSLA…)" autocomplete="off" />
+      <input id="search" type="text" class="search-input" placeholder="Search ticker (AAPL, TSLA…)" autocomplete="off" />
 
-      <!-- All tickers grid -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>📂 Browse Tickers</h2>
-        </div>
-        <div class="panel-body">
-          <div class="ticker-grid" id="ticker-grid"></div>
-        </div>
+      <div class="card dense">
+        <div class="card-head"><h2>Browse Tickers</h2></div>
+        <div class="card-body flush" id="ticker-grid"></div>
       </div>
 
-      <!-- Quote summary -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>💹 Quote Detail</h2>
-        </div>
-        <div class="panel-body" id="quote-detail">
-          <div class="empty"><div class="emoji">📊</div>Loading quote…</div>
+      <div class="card dense">
+        <div class="card-head"><h2>Quote Detail</h2></div>
+        <div class="card-body" id="quote-detail">
+          <div><div class="skel skel-row"></div><div class="skel skel-row"></div></div>
         </div>
       </div>
 
@@ -296,6 +318,9 @@
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 <script>
+const ACCENT = '#10b981';
+const DOWN = '#f43f5e';
+
 const fmtUsd = (n, max=2) => n == null ? '—' : new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:max }).format(n);
 const fmtNum = n => n == null ? '—' : new Intl.NumberFormat('en-US', { maximumFractionDigits:2 }).format(n);
 const fmtPct = n => n == null ? '—' : (n*100).toFixed(2) + '%';
@@ -307,15 +332,14 @@ const fmtBig = n => {
   return '$' + n.toLocaleString();
 };
 const sign = n => n == null ? '' : (n >= 0 ? '+' : '');
-const clsGL = n => n == null ? '' : (n >= 0 ? 'gain' : 'loss');
+const cls = n => n == null ? '' : (n >= 0 ? 'up' : 'dn');
 
 let chart = null;
 let allTickers = [];
 let currentTicker = null;
 let currentRange = '3M';
 
-// ============== Sparkline ==============
-function spark(canvas, values, color) {
+function spark(canvas, values, isUp) {
   if (!canvas || !values?.length) return;
   const ctx = canvas.getContext('2d');
   canvas.width = canvas.offsetWidth * 2;
@@ -325,7 +349,7 @@ function spark(canvas, values, color) {
   const min = Math.min(...values), max = Math.max(...values);
   const range = max - min || 1;
   ctx.beginPath();
-  ctx.strokeStyle = color;
+  ctx.strokeStyle = isUp ? ACCENT : DOWN;
   ctx.lineWidth = 1.5;
   values.forEach((v, i) => {
     const x = (i / (values.length-1)) * W;
@@ -333,42 +357,36 @@ function spark(canvas, values, color) {
     if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   });
   ctx.stroke();
-  ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
-  ctx.fillStyle = color + '22';
-  ctx.fill();
 }
 
-// ============== Indices bar ==============
 async function loadIndices() {
   try {
     const r = await fetch('/api/market/indices');
     const indices = await r.json();
     const bar = document.getElementById('indices-bar');
     bar.innerHTML = indices.map((idx, i) => {
-      const up = idx.change_pct >= 0;
-      const color = up ? 'var(--gain)' : 'var(--loss)';
+      const color = idx.change_pct == null ? 'var(--text-tertiary)' : (idx.change_pct >= 0 ? 'var(--up)' : 'var(--down)');
       const chgTxt = idx.change_pct == null ? '—' : `${sign(idx.change_pct)}${(idx.change_pct*100).toFixed(2)}%`;
-      return `<div class="ticker-pill">
+      return `<div class="tile">
         <div class="sym">${idx.name}</div>
         <div class="row">
           <span class="price">${idx.price != null ? '$' + idx.price.toFixed(2) : '—'}</span>
           <span class="chg" style="color:${color}">${chgTxt}</span>
         </div>
-        <canvas class="spark" id="idx-spark-${i}"></canvas>
+        <canvas class="spark" id="idx-spk-${i}"></canvas>
       </div>`;
     }).join('');
     requestAnimationFrame(() => {
       indices.forEach((idx, i) => {
-        const cv = document.getElementById('idx-spark-'+i);
-        if (cv && idx.spark?.length) spark(cv, idx.spark, idx.change_pct >= 0 ? '#10b981' : '#ef4444');
+        const cv = document.getElementById('idx-spk-'+i);
+        if (cv && idx.spark?.length) spark(cv, idx.spark, idx.change_pct >= 0);
       });
     });
   } catch (e) {
-    document.getElementById('indices-bar').innerHTML = '<div class="empty muted" style="padding:18px">Indices unavailable</div>';
+    document.getElementById('indices-bar').innerHTML = '<div class="empty" style="padding:14px">Indices unavailable</div>';
   }
 }
 
-// ============== Tickers list ==============
 async function loadTickers() {
   try {
     const r = await fetch('/api/tickers');
@@ -379,45 +397,42 @@ async function loadTickers() {
 }
 
 function renderTickerGrid() {
-  const grid = document.getElementById('ticker-grid');
-  grid.innerHTML = allTickers.map(t => `
+  const el = document.getElementById('ticker-grid');
+  el.innerHTML = allTickers.map(t => `
     <div class="ticker-card ${t.sym === currentTicker ? 'active' : ''}" onclick="selectTicker('${t.sym}')">
       <div class="sym">${t.sym}</div>
       <div class="nm">${t.name}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function renderWatchlist() {
   const wl = document.getElementById('watchlist');
-  // Pin first 6 to sidebar watchlist
   const items = allTickers.slice(0, 6);
   wl.innerHTML = items.map(t => `
     <a class="nav-item ${t.sym === currentTicker ? 'active' : ''}" onclick="selectTicker('${t.sym}')">
-      <span class="icon">📈</span> ${t.sym}
-    </a>
-  `).join('');
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      ${t.sym}
+    </a>`).join('');
 }
 
-// ============== Hero render ==============
 function renderHero(d) {
-  document.getElementById('hero-icon').textContent = d.ticker.slice(0, 2);
+  document.getElementById('hero-mark').textContent = d.ticker.slice(0, 2);
   document.getElementById('hero-ticker').textContent = d.ticker;
   document.getElementById('hero-name').textContent = d.name;
   document.getElementById('hero-price').textContent = fmtUsd(d.latest.price);
-  document.getElementById('hero-price').className = 'value ' + clsGL(d.latest.change);
+  document.getElementById('hero-price').className = 'value ' + cls(d.latest.change);
   const delta = document.getElementById('hero-delta');
   const ch = d.latest.change, chp = d.latest.change_pct;
   if (ch == null) {
     delta.innerHTML = '<span class="muted">no quote</span>';
   } else {
     const arrow = ch >= 0 ? '<span class="price-arrow up"></span>' : '<span class="price-arrow down"></span>';
-    delta.innerHTML = `${arrow} <span class="${clsGL(ch)}">${sign(ch)}${fmtUsd(ch)} (${sign(chp)}${fmtPct(chp)})</span>`;
+    delta.innerHTML = `${arrow} <span class="${cls(ch)}">${sign(ch)}${fmtUsd(ch)} (${sign(chp)}${fmtPct(chp)})</span>`;
   }
-  document.getElementById('chart-title').textContent = `${d.ticker} · ${d.name}`;
+  const title = document.getElementById('chart-title');
+  title.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> ${d.ticker} · <span class="meta">${d.name}</span>`;
 }
 
-// ============== Stats grid ==============
 function renderStats(s) {
   const items = [
     ['Market Cap', fmtBig(s.market_cap)],
@@ -434,49 +449,45 @@ function renderStats(s) {
     ['Gross Margin', fmtPct(s.gross_margin)],
     ['Op. Margin', fmtPct(s.operating_margin)],
     ['Net Margin', fmtPct(s.net_margin)],
-    ['Debt/Equity', fmtNum(s.debt_to_equity)],
+    ['Debt / Equity', fmtNum(s.debt_to_equity)],
     ['Current Ratio', fmtNum(s.current_ratio)],
     ['Revenue Growth', fmtPct(s.revenue_growth)],
     ['Payout Ratio', fmtPct(s.dividend_payout)],
   ];
-  document.getElementById('stats-grid').innerHTML = items.map(([k, v]) => `
-    <div class="stat-cell">
-      <div class="label">${k}</div>
-      <div class="value">${v}</div>
+  document.getElementById('stats').innerHTML = items.map(([k, v]) => `
+    <div class="stat">
+      <div class="stat-label">${k}</div>
+      <div class="stat-value">${v}</div>
     </div>
   `).join('');
 }
 
-// ============== Quote detail (right sidebar) ==============
 function renderQuoteDetail(d) {
   const s = d.stats, l = d.latest;
   const rows = [
     ['Last Price', fmtUsd(l.price)],
     ['Prev Close', fmtUsd(l.prev_close)],
-    ['Day Change', l.change != null ? `<span class="${clsGL(l.change)}">${sign(l.change)}${fmtUsd(l.change)}</span>` : '—'],
+    ['Day Change', l.change != null ? `<span class="${cls(l.change)}">${sign(l.change)}${fmtUsd(l.change)}</span>` : '—'],
     ['52W Range', s.high_52w && s.low_52w ? `${fmtUsd(s.low_52w)} - ${fmtUsd(s.high_52w)}` : '—'],
     ['Market Cap', fmtBig(s.market_cap)],
     ['P/E (ttm)', fmtNum(s.pe_ratio)],
     ['EPS (ttm)', fmtUsd(s.eps)],
   ];
-  document.getElementById('quote-detail').innerHTML = rows.map(([k, v]) => `
+  document.getElementById('quote-detail').innerHTML = '<div class="list">' + rows.map(([k, v]) => `
     <div class="list-row">
       <div class="left"><div class="name">${k}</div></div>
       <div class="right"><div class="v">${v}</div></div>
-    </div>
-  `).join('');
+    </div>`).join('') + '</div>';
 }
 
-// ============== Chart ==============
 function buildChart(prices) {
   const host = document.getElementById('chart');
   const ctx = host.getContext('2d');
   if (chart) chart.destroy();
-
   if (!prices.length) {
     ctx.clearRect(0, 0, host.width, host.height);
-    ctx.fillStyle = '#6b7280';
-    ctx.font = '13px Inter';
+    ctx.fillStyle = '#71717a';
+    ctx.font = '13px Geist, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('No price data available.', host.width / 2, host.height / 2);
     return;
@@ -484,30 +495,20 @@ function buildChart(prices) {
 
   const ts = prices.map(p => new Date(p.t));
   const closes = prices.map(p => p.c);
-  const lastClose = closes[closes.length - 1];
-  const firstClose = closes[0];
-  const isUp = lastClose >= firstClose;
-  const lineColor = isUp ? '#10b981' : '#ef4444';
-
+  const isUp = closes[closes.length - 1] >= closes[0];
+  const lineColor = isUp ? ACCENT : DOWN;
   const grad = ctx.createLinearGradient(0, 0, 0, 360);
-  grad.addColorStop(0, lineColor + '55');
-  grad.addColorStop(1, lineColor + '00');
+  grad.addColorStop(0, isUp ? 'rgba(16,185,129,0.25)' : 'rgba(244,63,94,0.25)');
+  grad.addColorStop(1, isUp ? 'rgba(16,185,129,0)' : 'rgba(244,63,94,0)');
 
   chart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: ts,
-      datasets: [{
-        label: 'Price',
-        data: closes,
-        borderColor: lineColor,
-        backgroundColor: grad,
-        tension: 0.3,
-        pointRadius: 0,
-        pointHoverRadius: 5,
-        borderWidth: 2,
-        fill: true,
-      }]
+      datasets: [{ label: 'Price', data: closes,
+        borderColor: lineColor, backgroundColor: grad,
+        tension: 0.3, pointRadius: 0, pointHoverRadius: 5,
+        borderWidth: 2, fill: true }]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
@@ -515,35 +516,31 @@ function buildChart(prices) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#1f2230',
-          borderColor: 'rgba(255,255,255,0.12)', borderWidth: 1, padding: 10,
-          titleColor: '#fff', bodyColor: '#98a2b3',
-          callbacks: { label: ctx => fmtUsd(ctx.parsed.y) }
+          backgroundColor: '#1f1f23', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, padding: 10,
+          titleColor: '#fff', bodyColor: '#a1a1aa',
+          titleFont: { family: 'Geist', size: 12 }, bodyFont: { family: 'Geist Mono', size: 11 },
+          callbacks: { label: c => fmtUsd(c.parsed.y) }
         },
-        zoom: {
-          zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' },
-          pan: { enabled: true, mode: 'x' },
-        }
+        zoom: { zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' }, pan: { enabled: true, mode: 'x' } }
       },
       scales: {
         x: { type: 'time', time: { unit: prices.length > 200 ? 'month' : prices.length > 30 ? 'week' : 'day' },
-             grid: { color: 'rgba(255,255,255,0.04)' },
-             ticks: { color: '#6b7280', font: { size: 10 } },
+             grid: { color: 'rgba(255,255,255,0.03)' },
+             ticks: { color: '#71717a', font: { size: 10, family: 'Geist Mono' } },
              border: { display: false } },
-        y: { grid: { color: 'rgba(255,255,255,0.04)' },
-             ticks: { color: '#6b7280', font: { size: 10 }, callback: v => '$' + v.toFixed(2) },
+        y: { grid: { color: 'rgba(255,255,255,0.03)' },
+             ticks: { color: '#71717a', font: { size: 10, family: 'Geist Mono' }, callback: v => '$' + v.toFixed(2) },
              border: { display: false }, position: 'right' }
       }
     }
   });
 }
 
-// ============== News ==============
 function renderNews(news) {
   const el = document.getElementById('news-body');
   document.getElementById('news-meta').textContent = news.length ? `${news.length} items` : '';
   if (!news.length) {
-    el.innerHTML = '<div class="empty"><div class="emoji">📭</div>No news for this ticker yet.</div>';
+    el.innerHTML = '<div class="empty"><div class="title">No news for this ticker yet</div></div>';
     return;
   }
   el.innerHTML = news.map(n => {
@@ -555,40 +552,36 @@ function renderNews(news) {
   }).join('');
 }
 
-// ============== Select ticker ==============
 async function selectTicker(sym) {
   currentTicker = sym;
-  // Update URL hash so it's bookmarkable
   history.replaceState(null, '', `#${sym}`);
-  document.title = `${sym} — AI Hedge Fund`;
+  document.title = `${sym} — AI Trading Lab`;
   renderTickerGrid();
   renderWatchlist();
 
-  // Show loading state
   document.getElementById('hero-ticker').textContent = sym;
   document.getElementById('hero-name').textContent = 'Loading…';
-  document.getElementById('hero-price').textContent = '—';
+  document.getElementById('hero-price').innerHTML = '<span class="skel skel-num"></span>';
 
   try {
-    document.getElementById('status-pill').className = 'status-pill warn';
+    document.getElementById('status-pill').className = 'status warn';
     document.getElementById('status-text').textContent = 'LOADING';
-    const r = await fetch(`/api/stock/${sym}?range=${currentRange}`);
+    const r = await fetch(`/api/stock/${encodeURIComponent(sym)}?range=${currentRange}`);
     const d = await r.json();
     renderHero(d);
     renderStats(d.stats);
     renderQuoteDetail(d);
     buildChart(d.prices);
     renderNews(d.news);
-    document.getElementById('status-pill').className = 'status-pill';
+    document.getElementById('status-pill').className = 'status';
     document.getElementById('status-text').textContent = 'LIVE';
   } catch (e) {
     console.error(e);
-    document.getElementById('status-pill').className = 'status-pill err';
+    document.getElementById('status-pill').className = 'status err';
     document.getElementById('status-text').textContent = 'ERROR';
   }
 }
 
-// Range picker
 document.getElementById('range-picker').addEventListener('click', e => {
   if (e.target.tagName !== 'BUTTON') return;
   document.querySelectorAll('#range-picker button').forEach(b => b.classList.remove('active'));
@@ -597,8 +590,7 @@ document.getElementById('range-picker').addEventListener('click', e => {
   if (currentTicker) selectTicker(currentTicker);
 });
 
-// Ticker search
-document.getElementById('ticker-search').addEventListener('keydown', e => {
+document.getElementById('search').addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     const v = e.target.value.trim().toUpperCase();
     if (v) selectTicker(v);
@@ -606,21 +598,18 @@ document.getElementById('ticker-search').addEventListener('keydown', e => {
   }
 });
 
-// Cmd+K
 document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
-    document.getElementById('ticker-search').focus();
+    document.getElementById('search').focus();
   }
 });
 
-// Init: load indices + tickers, then pick first ticker (or URL hash)
 async function init() {
   await Promise.all([loadIndices(), loadTickers()]);
   const fromHash = location.hash.replace('#', '').toUpperCase();
   const initial = fromHash || (allTickers[0]?.sym || 'AAPL');
   selectTicker(initial);
-  // Refresh indices every 60s
   setInterval(loadIndices, 60000);
 }
 init();

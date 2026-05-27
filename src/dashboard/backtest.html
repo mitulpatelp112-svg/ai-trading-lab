@@ -2,215 +2,241 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>AI Hedge Fund — Backtest</title>
+<title>Backtest — AI Trading Lab</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2'><path d='M10 2v7.31l5.7 8.55a1 1 0 0 1-.83 1.55H4.13a1 1 0 0 1-.83-1.55L9 9.31V2'/><path d='M8 2h8'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/theme.css" />
 </head>
 <body>
 <div class="app">
 
-  <!-- TOP NAV -->
   <nav class="topnav">
     <div class="brand">
-      <span class="dot"></span>
-      <span>AI Hedge Fund</span>
+      <span class="brand-mark">AI</span>
+      <span>Trading Lab</span>
     </div>
     <div class="tabs">
-      <a class="tab" href="/">📊 Live Portfolio</a>
-      <a class="tab active" href="/backtest">🧪 Backtest</a>
-      <a class="tab" href="/stocks">📈 Stocks</a>
-      <a class="tab" data-tip="Coming soon">🤖 Analysts</a>
-      <a class="tab" data-tip="Coming soon">⚙️ Settings</a>
+      <a class="tab" href="/">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Portfolio
+      </a>
+      <a class="tab active" href="/backtest">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31l5.7 8.55a1 1 0 0 1-.83 1.55H4.13a1 1 0 0 1-.83-1.55L9 9.31V2"/><path d="M8 2h8"/></svg>
+        Backtest
+      </a>
+      <a class="tab" href="/stocks">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        Stocks
+      </a>
+      <a class="tab" data-tip="Coming soon">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg>
+        Analysts
+      </a>
     </div>
-    <div class="right">
-      <div class="cmd-k" data-tip="Quick search (coming soon)">
-        <span>Search</span><kbd>⌘K</kbd>
+    <div class="topnav-right">
+      <div class="cmd-k" onclick="document.getElementById('search').focus()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Search
+        <kbd>⌘K</kbd>
       </div>
-      <div id="status-pill" class="status-pill">
+      <div id="status-pill" class="status">
         <span class="pulse"></span>
         <span id="status-text">LOADING</span>
       </div>
     </div>
   </nav>
 
-  <!-- TICKER STRIP -->
   <div class="tickerbar" id="tickerbar">
-    <div class="empty muted" style="padding:18px">Loading…</div>
+    <div class="empty" style="padding:14px"><span class="skel skel-line" style="width:120px"></span></div>
   </div>
 
   <div class="main-grid">
 
-    <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-label">Backtest</div>
-        <a class="nav-item active"><span class="icon">📊</span> Overview</a>
-        <a class="nav-item"><span class="icon">💱</span> All Trades <span class="badge" id="nav-trade-count">0</span></a>
-        <a class="nav-item"><span class="icon">📈</span> Equity Curve</a>
-        <a class="nav-item"><span class="icon">🎯</span> Per-Ticker</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-label">Metrics</div>
-        <a class="nav-item"><span class="icon">📐</span> Risk / Sharpe</a>
-        <a class="nav-item"><span class="icon">📉</span> Drawdown</a>
-        <a class="nav-item"><span class="icon">⚖️</span> Win/Loss</a>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-label">Compare</div>
-        <a class="nav-item"><span class="icon">🆚</span> vs S&P 500</a>
-        <a class="nav-item"><span class="icon">📜</span> Run History</a>
-      </div>
+      <div class="sidebar-label">Backtest</div>
+      <a class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Overview
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        All Trades <span class="badge" id="nav-trade-count">0</span>
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Equity Curve
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        Per-Ticker
+      </a>
+
+      <div class="sidebar-label">Metrics</div>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Risk / Sharpe
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+        Drawdown
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+        Win / Loss
+      </a>
+
+      <div class="sidebar-label">Compare</div>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m13 17 5-5-5-5"/><path d="m6 17 5-5-5-5"/></svg>
+        vs S&P 500
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Run History
+      </a>
     </aside>
 
-    <!-- CENTER -->
     <main class="content">
 
       <div class="page-head">
-        <div>
-          <h1>🛢️🥇 Commodities Backtest</h1>
-          <div class="subtitle">XOM, CVX, NEM, GOLD · qwen3:8b · Finnhub + Alpaca · updated <span id="updated">—</span></div>
+        <div class="title">
+          <h1>Futures Backtest</h1>
+          <div class="subtitle">CL=F · GC=F · SI=F · HG=F · NG=F · qwen3:8b · yfinance · 3 quant analysts · updated <span id="updated">—</span></div>
         </div>
         <div class="actions">
-          <button class="btn ghost" onclick="tick()">↻ Refresh</button>
-          <button class="btn">Export CSV</button>
+          <button class="btn ghost" onclick="tick()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+            Refresh
+          </button>
+          <button class="btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export CSV
+          </button>
         </div>
       </div>
 
-      <!-- Progress card (prominent while running) -->
-      <div class="panel" id="progress-card">
-        <div class="panel-head">
-          <h2>⏱️ Progress</h2>
-          <div class="right">
-            <span class="muted" style="font-size:12px" id="progress-eta"></span>
-          </div>
+      <!-- Progress card -->
+      <div class="card">
+        <div class="card-head">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Progress
+          </h2>
+          <span class="meta" id="progress-eta">—</span>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
           <div style="display:flex;justify-content:space-between;align-items:baseline">
             <span style="font-size:14px;font-weight:500" id="progress-text">—</span>
-            <span class="muted" style="font-size:12px" id="progress-pct">0%</span>
+            <span class="muted" style="font-size:12px;font-family:var(--font-mono)" id="progress-pct">0%</span>
           </div>
           <div class="progress"><div class="fill" id="progress-fill" style="width:0%"></div></div>
         </div>
       </div>
 
-      <!-- KPIs -->
-      <div class="kpi-grid">
+      <!-- KPI bordered grid -->
+      <div class="kpi-grid-bordered">
         <div class="kpi">
-          <div class="label">Total Value</div>
-          <div class="value" id="kpi-total">—</div>
-          <div class="sub" id="kpi-total-sub">cash — · pos —</div>
+          <div class="kpi-label">Total Value</div>
+          <div class="kpi-value" id="kpi-total">—</div>
+          <div class="kpi-sub" id="kpi-total-sub">cash — · pos —</div>
         </div>
         <div class="kpi">
-          <div class="label">Return</div>
-          <div class="value" id="kpi-return">—</div>
-          <div class="sub">from $10,000</div>
+          <div class="kpi-label">Return</div>
+          <div class="kpi-value" id="kpi-return">—</div>
+          <div class="kpi-sub">from $10,000</div>
         </div>
         <div class="kpi">
-          <div class="label">Sharpe Ratio</div>
-          <div class="value" id="kpi-sharpe">—</div>
-          <div class="sub">risk-adjusted</div>
+          <div class="kpi-label">Sharpe</div>
+          <div class="kpi-value" id="kpi-sharpe">—</div>
+          <div class="kpi-sub">risk-adjusted</div>
         </div>
         <div class="kpi">
-          <div class="label">Max Drawdown</div>
-          <div class="value" id="kpi-dd">—</div>
-          <div class="sub">peak to trough</div>
+          <div class="kpi-label">Max Drawdown</div>
+          <div class="kpi-value" id="kpi-dd">—</div>
+          <div class="kpi-sub">peak to trough</div>
         </div>
         <div class="kpi">
-          <div class="label">Trades</div>
-          <div class="value" id="kpi-trades">0</div>
-          <div class="sub" id="kpi-trades-sub">over 0 days</div>
+          <div class="kpi-label">Trades</div>
+          <div class="kpi-value" id="kpi-trades">0</div>
+          <div class="kpi-sub" id="kpi-trades-sub">over 0 days</div>
         </div>
       </div>
 
       <!-- Chart -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>📈 Equity Curve <span class="muted" style="font-weight:400;font-size:11px">paper portfolio over time</span></h2>
-          <div class="right">
-            <button class="btn ghost" onclick="if(chart)chart.resetZoom()" data-tip="Reset zoom">⤢</button>
-          </div>
+      <div class="card">
+        <div class="card-head">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Equity Curve
+            <span class="meta">paper portfolio over time</span>
+          </h2>
+          <button class="btn ghost" onclick="if(chart)chart.resetZoom()" data-tip="Reset zoom">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          </button>
         </div>
-        <div class="panel-body" style="height:360px">
+        <div class="card-body" style="height:360px">
           <div class="chart-host"><canvas id="chart"></canvas></div>
         </div>
       </div>
 
-      <!-- Trades table -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>💱 Trade History <span class="muted" style="font-weight:400;font-size:11px">most recent first</span></h2>
-          <div class="right">
-            <div class="segmented">
-              <button class="active">ALL</button>
-              <button>BUY</button>
-              <button>SELL</button>
-              <button>SHORT</button>
-              <button>COVER</button>
-            </div>
+      <!-- Trades -->
+      <div class="card">
+        <div class="card-head">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+            Trade History
+            <span class="meta">most recent first</span>
+          </h2>
+          <div class="segmented" id="trade-filter">
+            <button class="active" data-act="ALL">ALL</button>
+            <button data-act="BUY">BUY</button>
+            <button data-act="SELL">SELL</button>
+            <button data-act="SHORT">SHORT</button>
+            <button data-act="COVER">COVER</button>
           </div>
         </div>
-        <div class="panel-body flush" style="max-height:520px;overflow-y:auto" id="trades-body">
-          <div class="empty"><div class="emoji">⏳</div>Loading trades…</div>
+        <div class="card-body flush" style="max-height:520px;overflow-y:auto" id="trades-body">
+          <div style="padding:18px">
+            <div class="skel skel-row"></div><div class="skel skel-row"></div><div class="skel skel-row"></div>
+          </div>
         </div>
       </div>
 
     </main>
 
-    <!-- RIGHT SIDEBAR -->
     <aside class="rightbar">
 
-      <input type="text" class="search-input" placeholder="Search trade by ticker, date…" id="search-input" />
+      <input type="text" id="search" class="search-input" placeholder="Search trade by ticker, date…" />
 
-      <!-- Per-ticker breakdown -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>🎯 Per-Ticker</h2>
-        </div>
-        <div class="panel-body flush" id="per-ticker-body">
-          <div class="empty"><div class="emoji">⏳</div>Computing…</div>
-        </div>
-      </div>
-
-      <!-- Run config -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>⚙️ Run Config</h2>
-        </div>
-        <div class="panel-body">
-          <div class="list-row">
-            <div class="left"><div class="name">Model</div></div>
-            <div class="right"><span class="badge long">qwen3:8b</span></div>
-          </div>
-          <div class="list-row">
-            <div class="left"><div class="name">Initial Capital</div></div>
-            <div class="right"><div class="v">$10,000</div></div>
-          </div>
-          <div class="list-row">
-            <div class="left"><div class="name">Tickers</div></div>
-            <div class="right"><div class="v">4</div></div>
-          </div>
-          <div class="list-row">
-            <div class="left"><div class="name">Analysts</div></div>
-            <div class="right"><div class="v">9</div></div>
-          </div>
-          <div class="list-row">
-            <div class="left"><div class="name">Range</div><div class="meta">Mar 20 → May 20</div></div>
-            <div class="right"><div class="v">2026</div></div>
+      <div class="card dense">
+        <div class="card-head"><h2>Per-Ticker</h2></div>
+        <div class="card-body flush" id="per-ticker-body">
+          <div style="padding:18px">
+            <div class="skel skel-row"></div><div class="skel skel-row"></div>
           </div>
         </div>
       </div>
 
-      <!-- Top trades -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>🏆 Recent Activity</h2>
+      <div class="card dense">
+        <div class="card-head"><h2>Run Config</h2></div>
+        <div class="card-body">
+          <div class="list">
+            <div class="list-row"><div class="left"><div class="name">Model</div></div><div class="right"><span class="badge accent">qwen3:8b</span></div></div>
+            <div class="list-row"><div class="left"><div class="name">Initial Capital</div></div><div class="right"><div class="v">$10,000</div></div></div>
+            <div class="list-row"><div class="left"><div class="name">Tickers</div></div><div class="right"><div class="v">5</div></div></div>
+            <div class="list-row"><div class="left"><div class="name">Analysts</div></div><div class="right"><div class="v">3</div></div></div>
+            <div class="list-row"><div class="left"><div class="name">Range</div><div class="meta">Mar 20 → May 20</div></div><div class="right"><div class="v">2026</div></div></div>
+          </div>
         </div>
-        <div class="panel-body" id="recent-body" style="max-height:340px;overflow-y:auto">
-          <div class="empty"><div class="emoji">⏳</div>Loading…</div>
+      </div>
+
+      <div class="card dense">
+        <div class="card-head"><h2>Recent Activity</h2></div>
+        <div class="card-body" id="recent-body" style="max-height:340px;overflow-y:auto">
+          <div><div class="skel skel-row"></div><div class="skel skel-row"></div></div>
         </div>
       </div>
 
@@ -224,17 +250,20 @@
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 <script>
+const ACCENT = '#10b981';
+const DOWN = '#f43f5e';
+
 const fmtUsd = (n, max=2) => n == null ? '—' : new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:max }).format(n);
 const fmtUsd0 = n => fmtUsd(n, 0);
 const fmtPct = n => n == null ? '—' : (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
 const sign = n => n == null ? '' : (n >= 0 ? '+' : '');
-const clsGL = n => n == null ? '' : (n >= 0 ? 'gain' : 'loss');
+const cls = n => n == null ? '' : (n >= 0 ? 'up' : 'dn');
 
 let chart = null;
 let lastData = null;
 let filterAction = 'ALL';
 
-function spark(canvas, values, color) {
+function spark(canvas, values, isUp) {
   if (!canvas || !values?.length) return;
   const ctx = canvas.getContext('2d');
   canvas.width = canvas.offsetWidth * 2;
@@ -244,7 +273,7 @@ function spark(canvas, values, color) {
   const min = Math.min(...values), max = Math.max(...values);
   const range = max - min || 1;
   ctx.beginPath();
-  ctx.strokeStyle = color;
+  ctx.strokeStyle = isUp ? ACCENT : DOWN;
   ctx.lineWidth = 1.5;
   values.forEach((v, i) => {
     const x = (i / (values.length-1)) * W;
@@ -252,57 +281,6 @@ function spark(canvas, values, color) {
     if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   });
   ctx.stroke();
-  ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
-  ctx.fillStyle = color + '22';
-  ctx.fill();
-}
-
-// =========== Ticker bar (tickers + their stats) ===========
-function renderTickers(d) {
-  const bar = document.getElementById('tickerbar');
-  const tickers = ['XOM','CVX','NEM','GOLD'];
-  const pertkr = computePerTicker(d.trades, tickers);
-
-  const portValues = (d.daily || []).map(x => x.total_value);
-  const portPill = {
-    sym: 'PORTFOLIO',
-    price: portValues.length ? portValues[portValues.length-1] : 10000,
-    chg: d.metrics?.return_pct != null ? d.metrics.return_pct / 100 : null,
-    vals: portValues,
-  };
-
-  const pills = [portPill, ...tickers.map(t => {
-    const st = pertkr[t] || {};
-    return {
-      sym: t,
-      price: st.lastPrice,
-      chg: st.netPlPct,
-      vals: st.priceSeries,
-    };
-  })];
-
-  bar.innerHTML = pills.map((p, i) => {
-    const color = p.chg == null ? 'var(--text-tertiary)' : (p.chg >= 0 ? 'var(--gain)' : 'var(--loss)');
-    const chgTxt = p.chg == null ? '—' : `${sign(p.chg)}${(p.chg*100).toFixed(2)}%`;
-    const priceTxt = p.price == null ? '—' : (p.sym === 'PORTFOLIO' ? fmtUsd0(p.price) : '$' + p.price.toFixed(2));
-    return `<div class="ticker-pill" data-i="${i}">
-      <div class="sym">${p.sym}</div>
-      <div class="row">
-        <span class="price">${priceTxt}</span>
-        <span class="chg" style="color:${color}">${chgTxt}</span>
-      </div>
-      <canvas class="spark" id="spark-${i}"></canvas>
-    </div>`;
-  }).join('');
-
-  requestAnimationFrame(() => {
-    pills.forEach((p, i) => {
-      const cv = document.getElementById('spark-'+i);
-      if (cv && p.vals && p.vals.length > 2) {
-        spark(cv, p.vals, p.chg >= 0 ? '#10b981' : '#ef4444');
-      }
-    });
-  });
 }
 
 function computePerTicker(trades, tickers) {
@@ -312,44 +290,67 @@ function computePerTicker(trades, tickers) {
     if (!myTrades.length) { stats[t] = {}; return; }
     const prices = myTrades.map(x => x.price).reverse();
     const totalVol = myTrades.reduce((s, x) => s + Math.abs(x.qty), 0);
-    const buyVol = myTrades.filter(x => ['BUY','COVER'].includes(x.action)).reduce((s, x) => s + Math.abs(x.qty), 0);
-    const sellVol = myTrades.filter(x => ['SELL','SHORT'].includes(x.action)).reduce((s, x) => s + Math.abs(x.qty), 0);
-    // crude P&L: sum of position_value rows
-    const netPl = myTrades.reduce((s, x) => s + (x.position_value || 0), 0);
     const lastPrice = prices[prices.length - 1] || prices[0];
     const firstPrice = prices[0];
     const netPlPct = firstPrice ? (lastPrice - firstPrice) / firstPrice : 0;
-    stats[t] = {
-      tradeCount: myTrades.length,
-      totalVol, buyVol, sellVol,
-      netPl, netPlPct,
-      lastPrice, firstPrice,
-      priceSeries: prices,
-    };
+    stats[t] = { tradeCount: myTrades.length, totalVol, lastPrice, firstPrice, netPlPct, priceSeries: prices };
   });
   return stats;
 }
 
-// =========== KPIs ===========
-function renderKpis(m, trade_count, day_count) {
-  const total = m.total_value;
-  const ret = m.return_pct;
+function renderTickers(d) {
+  const bar = document.getElementById('tickerbar');
+  const tickers = ['CL=F','GC=F','SI=F','HG=F','NG=F'];
+  const per = computePerTicker(d.trades, tickers);
 
+  const portValues = (d.daily || []).map(x => x.total_value);
+  const portfolioPill = {
+    sym: 'Portfolio',
+    price: portValues.length ? portValues[portValues.length-1] : 10000,
+    chg: d.metrics?.return_pct != null ? d.metrics.return_pct / 100 : null,
+    vals: portValues,
+  };
+
+  const pills = [portfolioPill, ...tickers.map(t => {
+    const s = per[t] || {};
+    return { sym: t, price: s.lastPrice, chg: s.netPlPct, vals: s.priceSeries };
+  })];
+
+  bar.innerHTML = pills.map((p, i) => {
+    const color = p.chg == null ? 'var(--text-tertiary)' : (p.chg >= 0 ? 'var(--up)' : 'var(--down)');
+    const chgTxt = p.chg == null ? '—' : `${sign(p.chg)}${(p.chg*100).toFixed(2)}%`;
+    const priceTxt = p.price == null ? '—' : (p.sym === 'Portfolio' ? fmtUsd0(p.price) : '$' + p.price.toFixed(2));
+    return `<div class="tile" data-i="${i}">
+      <div class="sym">${p.sym}</div>
+      <div class="row"><span class="price">${priceTxt}</span><span class="chg" style="color:${color}">${chgTxt}</span></div>
+      <canvas class="spark" id="spk-${i}"></canvas>
+    </div>`;
+  }).join('');
+
+  requestAnimationFrame(() => {
+    pills.forEach((p, i) => {
+      const cv = document.getElementById('spk-'+i);
+      if (cv && p.vals && p.vals.length > 2) spark(cv, p.vals, p.chg >= 0);
+    });
+  });
+}
+
+function renderKpis(m, trade_count, day_count) {
+  const total = m.total_value, ret = m.return_pct;
   document.getElementById('kpi-total').textContent = fmtUsd0(total);
-  document.getElementById('kpi-total').className = 'value ' + clsGL(ret);
+  document.getElementById('kpi-total').className = 'kpi-value ' + cls(ret);
   document.getElementById('kpi-total-sub').textContent = `cash ${fmtUsd0(m.cash_balance)} · pos ${fmtUsd0(m.position_value)}`;
   document.getElementById('kpi-return').textContent = fmtPct(ret);
-  document.getElementById('kpi-return').className = 'value ' + clsGL(ret);
+  document.getElementById('kpi-return').className = 'kpi-value ' + cls(ret);
   document.getElementById('kpi-sharpe').textContent = m.sharpe_ratio == null ? '—' : m.sharpe_ratio.toFixed(2);
-  document.getElementById('kpi-sharpe').className = 'value ' + clsGL(m.sharpe_ratio);
+  document.getElementById('kpi-sharpe').className = 'kpi-value ' + cls(m.sharpe_ratio);
   document.getElementById('kpi-dd').textContent = m.max_drawdown_pct == null ? '—' : m.max_drawdown_pct.toFixed(2) + '%';
-  document.getElementById('kpi-dd').className = 'value ' + (m.max_drawdown_pct < 0 ? 'loss' : '');
+  document.getElementById('kpi-dd').className = 'kpi-value ' + (m.max_drawdown_pct < 0 ? 'dn' : '');
   document.getElementById('kpi-trades').textContent = trade_count.toLocaleString();
   document.getElementById('kpi-trades-sub').textContent = `over ${day_count} days`;
   document.getElementById('nav-trade-count').textContent = trade_count;
 }
 
-// =========== Progress ===========
 function renderProgress(d) {
   const pct = d.progress_pct;
   document.getElementById('progress-fill').style.width = pct + '%';
@@ -359,88 +360,71 @@ function renderProgress(d) {
   const pillText = document.getElementById('status-text');
 
   if (d.status === 'complete') {
-    document.getElementById('progress-eta').textContent = '✅ Done';
-    pill.className = 'status-pill'; pillText.textContent = 'COMPLETE';
-    // Hide progress card when fully done
-    // document.getElementById('progress-card').style.display = 'none';
+    document.getElementById('progress-eta').textContent = 'Done';
+    pill.className = 'status'; pillText.textContent = 'COMPLETE';
   } else if (d.days_complete > 1) {
     const remaining = d.days_total - d.days_complete;
-    const estMin = remaining * 22;
+    const estMin = remaining * 7;
     const hrs = Math.floor(estMin / 60);
     const mins = estMin % 60;
     document.getElementById('progress-eta').textContent = `~${hrs}h ${mins}m remaining`;
-    pill.className = 'status-pill warn'; pillText.textContent = 'RUNNING';
+    pill.className = 'status warn'; pillText.textContent = 'RUNNING';
   } else {
     document.getElementById('progress-eta').textContent = 'warming up…';
-    pill.className = 'status-pill warn'; pillText.textContent = 'STARTING';
+    pill.className = 'status warn'; pillText.textContent = 'STARTING';
   }
 }
 
-// =========== Chart ===========
 function buildChart(daily) {
   if (!daily.length) return;
   const ts = daily.map(d => new Date(d.date));
   const totals = daily.map(d => d.total_value);
-
   const host = document.getElementById('chart');
-  const gctx = host.getContext('2d');
-  const grad = gctx.createLinearGradient(0, 0, 0, 360);
-  grad.addColorStop(0, 'rgba(139,92,246,0.35)');
-  grad.addColorStop(1, 'rgba(139,92,246,0.0)');
+  const ctx = host.getContext('2d');
+  const grad = ctx.createLinearGradient(0, 0, 0, 360);
+  grad.addColorStop(0, 'rgba(16,185,129,0.2)');
+  grad.addColorStop(1, 'rgba(16,185,129,0)');
 
   if (chart) chart.destroy();
-  chart = new Chart(gctx, {
+  chart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: ts,
       datasets: [
         { label: 'Portfolio Value', data: totals,
-          borderColor: '#8b5cf6', backgroundColor: grad,
-          tension: 0.3, pointRadius: daily.length < 15 ? 4 : 0, pointHoverRadius: 5,
-          borderWidth: 2.5, fill: true },
+          borderColor: ACCENT, backgroundColor: grad,
+          tension: 0.3, pointRadius: daily.length < 15 ? 3 : 0, pointHoverRadius: 5,
+          borderWidth: 2, fill: true },
         { label: 'Initial ($10k)', data: ts.map(() => 10000),
-          borderColor: '#6b7280', borderDash: [4, 4],
-          pointRadius: 0, borderWidth: 1.5, fill: false },
+          borderColor: '#71717a', borderDash: [4, 4], pointRadius: 0, borderWidth: 1.25, fill: false },
       ]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
-        legend: {
-          align: 'end',
-          labels: { color: '#98a2b3', boxWidth: 8, boxHeight: 8, padding: 16, font: { size: 11 } }
-        },
+        legend: { align: 'end', labels: { color: '#a1a1aa', boxWidth: 8, boxHeight: 8, padding: 16, font: { size: 11, family: 'Geist' } } },
         tooltip: {
-          backgroundColor: '#1f2230',
-          borderColor: 'rgba(255,255,255,0.12)', borderWidth: 1, padding: 10,
-          titleColor: '#fff', bodyColor: '#98a2b3',
-          callbacks: { label: ctx => `${ctx.dataset.label}: ${fmtUsd0(ctx.parsed.y)}` }
+          backgroundColor: '#1f1f23', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, padding: 10,
+          titleColor: '#fff', bodyColor: '#a1a1aa',
+          titleFont: { family: 'Geist', size: 12 }, bodyFont: { family: 'Geist Mono', size: 11 },
+          callbacks: { label: c => `${c.dataset.label}: ${fmtUsd0(c.parsed.y)}` }
         },
-        zoom: {
-          zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' },
-          pan: { enabled: true, mode: 'x' },
-        }
+        zoom: { zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' }, pan: { enabled: true, mode: 'x' } }
       },
       scales: {
-        x: { type: 'time', time: { unit: 'day' },
-             grid: { color: 'rgba(255,255,255,0.04)' },
-             ticks: { color: '#6b7280', font: { size: 10 } },
-             border: { display: false } },
-        y: { grid: { color: 'rgba(255,255,255,0.04)' },
-             ticks: { color: '#6b7280', font: { size: 10 }, callback: v => '$' + v.toLocaleString() },
-             border: { display: false } }
+        x: { type: 'time', time: { unit: 'day' }, grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#71717a', font: { size: 10, family: 'Geist Mono' } }, border: { display: false } },
+        y: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#71717a', font: { size: 10, family: 'Geist Mono' }, callback: v => '$' + v.toLocaleString() }, border: { display: false } }
       }
     }
   });
 }
 
-// =========== Trades table ===========
 function renderTrades(trades) {
   const el = document.getElementById('trades-body');
   const filtered = filterAction === 'ALL' ? trades : trades.filter(t => t.action === filterAction);
   if (!filtered.length) {
-    el.innerHTML = '<div class="empty"><div class="emoji">📭</div>No trades match filter.</div>';
+    el.innerHTML = '<div class="empty"><div class="title">No trades match filter</div></div>';
     return;
   }
   const rows = filtered.slice(0, 200).map(t => `
@@ -451,78 +435,60 @@ function renderTrades(trades) {
       <td>${t.qty}</td>
       <td>$${t.price.toFixed(2)}</td>
       <td class="muted">${t.long_shares > 0 ? '+' + t.long_shares + 'L' : ''}${t.short_shares > 0 ? '−' + t.short_shares + 'S' : ''}</td>
-      <td class="${clsGL(t.position_value)}">${t.position_value >= 0 ? '+' : '−'}$${Math.abs(t.position_value).toFixed(0)}</td>
+      <td class="${cls(t.position_value)}">${t.position_value >= 0 ? '+' : '−'}$${Math.abs(t.position_value).toFixed(0)}</td>
     </tr>`).join('');
-
-  el.innerHTML = `<table class="pro">
-    <thead><tr>
-      <th class="left">Date</th>
-      <th class="left">Ticker</th>
-      <th class="left">Action</th>
-      <th>Qty</th>
-      <th>Price</th>
-      <th>Position</th>
-      <th>Value</th>
-    </tr></thead>
+  el.innerHTML = `<table class="lab">
+    <thead><tr><th class="left">Date</th><th class="left">Ticker</th><th class="left">Action</th><th>Qty</th><th>Price</th><th>Position</th><th>Value</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
 }
 
-// Action filter buttons
-document.querySelectorAll('.segmented button').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('.segmented button').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    filterAction = b.textContent.trim();
-    if (lastData) renderTrades(lastData.trades);
-  });
+document.getElementById('trade-filter').addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('#trade-filter button').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  filterAction = e.target.dataset.act;
+  if (lastData) renderTrades(lastData.trades);
 });
 
-// =========== Per-ticker panel ===========
 function renderPerTicker(d) {
-  const tickers = ['XOM','CVX','NEM','GOLD'];
+  const tickers = ['CL=F','GC=F','SI=F','HG=F','NG=F'];
   const stats = computePerTicker(d.trades, tickers);
   const el = document.getElementById('per-ticker-body');
-  el.innerHTML = tickers.map(t => {
+  el.innerHTML = '<div class="list" style="padding:0 18px 6px">' + tickers.map(t => {
     const s = stats[t];
     if (!s || !s.tradeCount) {
       return `<div class="list-row"><div class="left"><div class="name">${t}</div><div class="meta">no trades</div></div></div>`;
     }
     return `<div class="list-row">
-      <div class="left">
-        <div class="name">${t}</div>
-        <div class="meta">${s.tradeCount} trades · vol ${s.totalVol}</div>
-      </div>
+      <div class="left"><div class="name">${t}</div><div class="meta">${s.tradeCount} trades · vol ${s.totalVol}</div></div>
       <div class="right">
-        <div class="v ${clsGL(s.netPlPct)}">${sign(s.netPlPct)}${(s.netPlPct*100).toFixed(2)}%</div>
-        <div class="d muted">$${(s.lastPrice||0).toFixed(2)}</div>
+        <div class="v ${cls(s.netPlPct)}">${sign(s.netPlPct)}${(s.netPlPct*100).toFixed(2)}%</div>
+        <div class="d">$${(s.lastPrice||0).toFixed(2)}</div>
       </div>
     </div>`;
-  }).join('');
+  }).join('') + '</div>';
 }
 
-// =========== Recent activity ===========
 function renderRecent(trades) {
   const el = document.getElementById('recent-body');
   const recent = trades.slice(0, 8);
   if (!recent.length) {
-    el.innerHTML = '<div class="empty"><div class="emoji">📭</div>No trades yet.</div>';
+    el.innerHTML = '<div class="empty"><div class="title">No trades yet</div></div>';
     return;
   }
-  el.innerHTML = recent.map(t => `
+  el.innerHTML = '<div class="list">' + recent.map(t => `
     <div class="list-row">
       <div class="left">
         <div class="name"><span class="badge ${t.action.toLowerCase()}">${t.action}</span> ${t.ticker} <span class="muted">×${t.qty}</span></div>
         <div class="meta">${t.date} · $${t.price.toFixed(2)}</div>
       </div>
       <div class="right">
-        <div class="v ${clsGL(t.position_value)}">${t.position_value >= 0 ? '+' : '−'}$${Math.abs(t.position_value).toFixed(0)}</div>
+        <div class="v ${cls(t.position_value)}">${t.position_value >= 0 ? '+' : '−'}$${Math.abs(t.position_value).toFixed(0)}</div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('') + '</div>';
 }
 
-// =========== Main tick ===========
 async function tick() {
   try {
     const r = await fetch('/api/backtest');
@@ -537,7 +503,7 @@ async function tick() {
     renderPerTicker(d);
     renderRecent(d.trades);
   } catch (e) {
-    document.getElementById('status-pill').className = 'status-pill err';
+    document.getElementById('status-pill').className = 'status err';
     document.getElementById('status-text').textContent = 'FETCH ERR';
     console.error(e);
   }
@@ -546,7 +512,7 @@ async function tick() {
 document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
-    document.getElementById('search-input').focus();
+    document.getElementById('search').focus();
   }
 });
 

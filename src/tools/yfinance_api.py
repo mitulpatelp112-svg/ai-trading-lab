@@ -60,9 +60,13 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 def get_prices(ticker: str, start_date: str, end_date: str, api_key: str | None = None) -> list[Price]:
     try:
+        # yfinance treats `end` as EXCLUSIVE; pad +1 day so callers get the bar they asked for.
+        # This matters most for 1-day windows in the backtester engine.
+        from datetime import datetime as _dt, timedelta as _td
+        end_inclusive = (_dt.strptime(end_date, "%Y-%m-%d") + _td(days=1)).strftime("%Y-%m-%d")
         # Use Ticker.history() with our impersonated session for crumb-bypass
         df = _ticker(ticker).history(
-            start=start_date, end=end_date, interval="1d", auto_adjust=False,
+            start=start_date, end=end_inclusive, interval="1d", auto_adjust=False,
         )
     except Exception as e:
         logger.warning("yfinance download failed for %s: %s", ticker, e)

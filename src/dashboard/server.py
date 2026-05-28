@@ -84,7 +84,21 @@ def backtest_page() -> FileResponse:
 
 @app.get("/theme.css")
 def theme_css() -> FileResponse:
-    return FileResponse(str(ROOT / "theme.css"), media_type="text/css")
+    return FileResponse(
+        str(ROOT / "theme.css"),
+        media_type="text/css",
+        headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+    )
+
+
+# Send no-cache for HTML pages too — we iterate on them a lot
+@app.middleware("http")
+async def no_cache_html(request, call_next):
+    response = await call_next(request)
+    path = request.url.path
+    if path == "/" or path.endswith(".html") or path in ("/backtest", "/stocks"):
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    return response
 
 
 @app.get("/stocks")
@@ -292,11 +306,20 @@ _DD_RE = re.compile(r"Max Drawdown:\s*(-?[\d.]+)%")
 
 
 def _parse_backtest_log() -> dict:
-    """Parse the qwen3 backtest log into structured data for the UI."""
+    """Parse the qwen3 backtest log into structured data for the UI.
+
+    If BACKTEST_LOG points to <name>.log and a <name>_part1.log exists, we
+    concatenate them so the dashboard shows the full picture across a
+    mid-flight model swap.
+    """
     if not _BT_LOG.exists():
         return {"status": "no_log", "trades": [], "daily": [], "metrics": {}}
 
     text = _BT_LOG.read_text(errors="ignore")
+    # If sibling _partN logs exist, concat them in order for full continuity
+    parts = sorted(_BT_LOG.parent.glob(_BT_LOG.stem + "_part*.log"))
+    if parts:
+        text = "\n".join(p.read_text(errors="ignore") for p in parts)
     lines = text.splitlines()
 
     # Trades: list of dicts with date, ticker, action, qty, price, position_value

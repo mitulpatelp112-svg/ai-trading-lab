@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/theme.css" />
+<link rel="stylesheet" href="/theme.css?v=3" />
 </head>
 <body>
 <div class="app">
@@ -103,8 +103,8 @@
 
       <div class="page-head">
         <div class="title">
-          <h1>Futures Backtest</h1>
-          <div class="subtitle">CL=F · GC=F · SI=F · HG=F · NG=F · qwen3:8b · yfinance · 3 quant analysts · updated <span id="updated">—</span></div>
+          <h1>Tech Stocks Backtest <span class="badge accent" style="margin-left:8px;vertical-align:6px">Run #2</span></h1>
+          <div class="subtitle">AAPL · MSFT · GOOGL · NVDA · TSLA · qwen3:8b · Finnhub · 9 analysts · updated <span id="updated">—</span></div>
         </div>
         <div class="actions">
           <button class="btn ghost" onclick="tick()">
@@ -226,8 +226,8 @@
           <div class="list">
             <div class="list-row"><div class="left"><div class="name">Model</div></div><div class="right"><span class="badge accent">qwen3:8b</span></div></div>
             <div class="list-row"><div class="left"><div class="name">Initial Capital</div></div><div class="right"><div class="v">$10,000</div></div></div>
-            <div class="list-row"><div class="left"><div class="name">Tickers</div></div><div class="right"><div class="v">5</div></div></div>
-            <div class="list-row"><div class="left"><div class="name">Analysts</div></div><div class="right"><div class="v">3</div></div></div>
+            <div class="list-row"><div class="left"><div class="name">Tickers</div><div class="meta">tech basket</div></div><div class="right"><div class="v">5</div></div></div>
+            <div class="list-row"><div class="left"><div class="name">Analysts</div><div class="right"><div class="v">9</div></div></div></div>
             <div class="list-row"><div class="left"><div class="name">Range</div><div class="meta">Mar 20 → May 20</div></div><div class="right"><div class="v">2026</div></div></div>
           </div>
         </div>
@@ -300,7 +300,7 @@ function computePerTicker(trades, tickers) {
 
 function renderTickers(d) {
   const bar = document.getElementById('tickerbar');
-  const tickers = ['CL=F','GC=F','SI=F','HG=F','NG=F'];
+  const tickers = ['AAPL','MSFT','GOOGL','NVDA','TSLA'];
   const per = computePerTicker(d.trades, tickers);
 
   const portValues = (d.daily || []).map(x => x.total_value);
@@ -452,7 +452,7 @@ document.getElementById('trade-filter').addEventListener('click', e => {
 });
 
 function renderPerTicker(d) {
-  const tickers = ['CL=F','GC=F','SI=F','HG=F','NG=F'];
+  const tickers = ['AAPL','MSFT','GOOGL','NVDA','TSLA'];
   const stats = computePerTicker(d.trades, tickers);
   const el = document.getElementById('per-ticker-body');
   el.innerHTML = '<div class="list" style="padding:0 18px 6px">' + tickers.map(t => {

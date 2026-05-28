@@ -813,3 +813,14 @@ table.lab tbody tr:last-child td { border-bottom: 0; }
 
 /* ============== Inline SVG icon helper ============== */
 .ico { width: 14px; height: 14px; stroke-width: 1.75; vertical-align: -2px; flex-shrink: 0; }
+
+/* ============== Global SVG safety net ============== */
+/* Any inline SVG without explicit width/height defaults to 14px so it never
+   renders at the SVG default of 300x150 if a specific rule doesn't catch it. */
+svg:not([width]):not([height]) {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+/* Restore the chart canvas isn't affected (it's a <canvas>, not <svg>) */
+.brand-mark svg { width: auto; height: auto; }

@@ -1,0 +1,48 @@
+
+Using specified model: Ollama - qwen3:4b
+
+ ✓ Cathie Wood         [TSLA] Done                                              
+ ✓ Fundamentals Analyst[TSLA] Done                                              
+ ✓ Michael Burry       [TSLA] Done                                              
+ ✓ Peter Lynch         [TSLA] Done                                              
+ ✓ Portfolio Manager   [TSLA] Done                                              
+ ✓ Sentiment Analyst   [TSLA] Done                                              
+ ✓ Stanley Druckenmiller[TSLA] Done                                             
+ ✓ Technical Analyst   [TSLA] Done                                              
+ ✓ Valuation Analyst   [TSLA] Done                                              
+ ✓ Warren Buffett      [TSLA] Done                                              
+ ✓ Risk Management     [TSLA] Done                                              TERM environment variable not set.
+
+PORTFOLIO SUMMARY:
+Cash Balance: $17,144.17
+Total Position Value: $-6,908.17
+Total Value: $10,236.00
+Portfolio Return: +0.00%
+Benchmark Return: +0.00%
+
+
+
++------------+----------+----------+------------+---------+---------------+----------------+------------------+
+| Date       | Ticker   |  Action  |   Quantity |   Price |   Long Shares |   Short Shares |   Position Value |
++============+==========+==========+============+=========+===============+================+==================+
+| 2026-04-02 | AAPL     |  SHORT   |          6 |  255.89 |             0 |              6 |        -1,535.34 |
++------------+----------+----------+------------+---------+---------------+----------------+------------------+
+| 2026-04-02 | MSFT     |  SHORT   |          5 |  373.51 |             0 |              5 |        -1,867.55 |
++------------+----------+----------+------------+---------+---------------+----------------+------------------+
+| 2026-04-02 | GOOGL    |  SHORT   |          4 |  295.69 |             0 |              4 |        -1,182.74 |
++------------+----------+----------+------------+---------+---------------+----------------+------------------+
+| 2026-04-02 | NVDA     |  SHORT   |          7 |  177.31 |             0 |              7 |        -1,241.13 |
++------------+----------+----------+------------+---------+---------------+----------------+------------------+
+| 2026-04-02 | TSLA     |  SHORT   |          3 |  360.47 |             0 |              3 |        -1,081.41 |
++------------+----------+----------+------------+---------+---------------+----------------+------------------+
+
+
+
+
+
+Error in LLM call after 3 attempts: [Errno 61] Connection refusedError in LLM call after 3 attempts: [Errno 61] Connection refusedError in LLM call after 3 attempts: [Errno 61] Connection refused
+
+
+Error in LLM call after 3 attempts: [Errno 61] Connection refusedError in LLM call after 3 attempts: [Errno 61] Connection refused
+
+Error in LLM call after 3 attempts: [Errno 61] Connection refused

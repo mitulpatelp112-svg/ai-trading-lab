@@ -7,8 +7,8 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2'><path d='M10 2v7.31l5.7 8.55a1 1 0 0 1-.83 1.55H4.13a1 1 0 0 1-.83-1.55L9 9.31V2'/><path d='M8 2h8'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/theme.css?v=3" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/theme.css?v=4" />
 </head>
 <body>
 <div class="app">
@@ -57,43 +57,43 @@
 
     <aside class="sidebar">
       <div class="sidebar-label">Backtest</div>
-      <a class="nav-item active">
+      <a class="nav-item active" data-scroll="#sec-overview">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
         Overview
       </a>
-      <a class="nav-item">
+      <a class="nav-item" data-scroll="#sec-trades">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
         All Trades <span class="badge" id="nav-trade-count">0</span>
       </a>
-      <a class="nav-item">
+      <a class="nav-item" data-scroll="#sec-chart">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         Equity Curve
       </a>
-      <a class="nav-item">
+      <a class="nav-item" data-scroll="#sec-metrics">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         Per-Ticker
       </a>
 
       <div class="sidebar-label">Metrics</div>
-      <a class="nav-item">
+      <a class="nav-item" data-scroll="#sec-overview" data-flash="#kpi-sharpe">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         Risk / Sharpe
       </a>
-      <a class="nav-item">
+      <a class="nav-item" data-scroll="#sec-overview" data-flash="#kpi-dd">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
         Drawdown
       </a>
-      <a class="nav-item">
+      <a class="nav-item" data-scroll="#sec-metrics">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
         Win / Loss
       </a>
 
       <div class="sidebar-label">Compare</div>
-      <a class="nav-item">
+      <a class="nav-item" data-scroll="#sec-chart">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m13 17 5-5-5-5"/><path d="m6 17 5-5-5-5"/></svg>
         vs S&P 500
       </a>
-      <a class="nav-item">
+      <a class="nav-item" data-scroll="#sec-config">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Run History
       </a>
@@ -111,7 +111,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
             Refresh
           </button>
-          <button class="btn">
+          <button class="btn" id="export-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Export CSV
           </button>
@@ -137,7 +137,7 @@
       </div>
 
       <!-- KPI bordered grid -->
-      <div class="kpi-grid-bordered">
+      <div class="kpi-grid-bordered" id="sec-overview">
         <div class="kpi">
           <div class="kpi-label">Total Value</div>
           <div class="kpi-value" id="kpi-total">—</div>
@@ -165,8 +165,29 @@
         </div>
       </div>
 
+      <!-- Metrics card (Win/Loss, computed live) -->
+      <div class="card" id="sec-metrics">
+        <div class="card-head">
+          <h2>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg>
+            Trade Metrics
+            <span class="meta">computed from executed trades</span>
+          </h2>
+        </div>
+        <div class="card-body flush">
+          <div class="kpi-grid-bordered" id="metrics-grid" style="border-radius:0">
+            <div class="kpi" style="padding:16px 20px"><div class="kpi-label">Total Trades</div><div class="kpi-value" id="m-total">—</div></div>
+            <div class="kpi" style="padding:16px 20px"><div class="kpi-label">Buys / Sells</div><div class="kpi-value" id="m-buysell">—</div></div>
+            <div class="kpi" style="padding:16px 20px"><div class="kpi-label">Shorts / Covers</div><div class="kpi-value" id="m-shortcover">—</div></div>
+            <div class="kpi" style="padding:16px 20px"><div class="kpi-label">Long Win Rate</div><div class="kpi-value" id="m-winrate">—</div><div class="kpi-sub">profitable long days</div></div>
+            <div class="kpi" style="padding:16px 20px"><div class="kpi-label">Best Day</div><div class="kpi-value" id="m-best">—</div></div>
+            <div class="kpi" style="padding:16px 20px"><div class="kpi-label">Worst Day</div><div class="kpi-value" id="m-worst">—</div></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Chart -->
-      <div class="card">
+      <div class="card" id="sec-chart">
         <div class="card-head">
           <h2>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -183,7 +204,7 @@
       </div>
 
       <!-- Trades -->
-      <div class="card">
+      <div class="card" id="sec-trades">
         <div class="card-head">
           <h2>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
@@ -220,7 +241,7 @@
         </div>
       </div>
 
-      <div class="card dense">
+      <div class="card dense" id="sec-config">
         <div class="card-head"><h2>Run Config</h2></div>
         <div class="card-body">
           <div class="list">
@@ -250,8 +271,8 @@
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 <script>
-const ACCENT = '#10b981';
-const DOWN = '#f43f5e';
+const ACCENT = '#CC785C';
+const DOWN = '#D4694A';
 
 const fmtUsd = (n, max=2) => n == null ? '—' : new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:max }).format(n);
 const fmtUsd0 = n => fmtUsd(n, 0);
@@ -382,8 +403,8 @@ function buildChart(daily) {
   const host = document.getElementById('chart');
   const ctx = host.getContext('2d');
   const grad = ctx.createLinearGradient(0, 0, 0, 360);
-  grad.addColorStop(0, 'rgba(16,185,129,0.2)');
-  grad.addColorStop(1, 'rgba(16,185,129,0)');
+  grad.addColorStop(0, 'rgba(204,120,92,0.22)');
+  grad.addColorStop(1, 'rgba(204,120,92,0)');
 
   if (chart) chart.destroy();
   chart = new Chart(ctx, {
@@ -405,7 +426,7 @@ function buildChart(daily) {
       plugins: {
         legend: { align: 'end', labels: { color: '#a1a1aa', boxWidth: 8, boxHeight: 8, padding: 16, font: { size: 11, family: 'Geist' } } },
         tooltip: {
-          backgroundColor: '#1f1f23', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, padding: 10,
+          backgroundColor: '#383835', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, padding: 10,
           titleColor: '#fff', bodyColor: '#a1a1aa',
           titleFont: { family: 'Geist', size: 12 }, bodyFont: { family: 'Geist Mono', size: 11 },
           callbacks: { label: c => `${c.dataset.label}: ${fmtUsd0(c.parsed.y)}` }
@@ -420,9 +441,20 @@ function buildChart(daily) {
   });
 }
 
+let searchQuery = '';
+
 function renderTrades(trades) {
   const el = document.getElementById('trades-body');
-  const filtered = filterAction === 'ALL' ? trades : trades.filter(t => t.action === filterAction);
+  let filtered = filterAction === 'ALL' ? trades : trades.filter(t => t.action === filterAction);
+  // Apply free-text search across ticker, date, action
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    filtered = filtered.filter(t =>
+      t.ticker.toLowerCase().includes(q) ||
+      t.date.includes(q) ||
+      t.action.toLowerCase().includes(q)
+    );
+  }
   if (!filtered.length) {
     el.innerHTML = '<div class="empty"><div class="title">No trades match filter</div></div>';
     return;
@@ -489,6 +521,39 @@ function renderRecent(trades) {
     </div>`).join('') + '</div>';
 }
 
+// ===== Trade metrics (Win/Loss panel) =====
+function renderMetrics(d) {
+  const trades = d.trades || [];
+  const daily = d.daily || [];
+  const count = (act) => trades.filter(t => t.action === act).length;
+  const buys = count('BUY'), sells = count('SELL'), shorts = count('SHORT'), covers = count('COVER');
+
+  document.getElementById('m-total').textContent = (d.trade_count || trades.length).toLocaleString();
+  document.getElementById('m-buysell').textContent = `${buys} / ${sells}`;
+  document.getElementById('m-shortcover').textContent = `${shorts} / ${covers}`;
+
+  // Long position win rate: fraction of trade rows with positive position_value
+  const longRows = trades.filter(t => t.position_value > 0);
+  const lossRows = trades.filter(t => t.position_value < 0);
+  const winRate = (longRows.length + lossRows.length) > 0
+    ? longRows.length / (longRows.length + lossRows.length) : null;
+  const wr = document.getElementById('m-winrate');
+  wr.textContent = winRate == null ? '—' : (winRate * 100).toFixed(0) + '%';
+  wr.className = 'kpi-value ' + (winRate >= 0.5 ? 'up' : 'dn');
+
+  // Best / worst day by day-over-day total_value change
+  let best = null, worst = null;
+  for (let i = 1; i < daily.length; i++) {
+    const chg = daily[i].total_value - daily[i-1].total_value;
+    if (best == null || chg > best.chg) best = { chg, date: daily[i].date };
+    if (worst == null || chg < worst.chg) worst = { chg, date: daily[i].date };
+  }
+  const bEl = document.getElementById('m-best');
+  const wEl = document.getElementById('m-worst');
+  if (best) { bEl.textContent = '+$' + best.chg.toFixed(0); bEl.className = 'kpi-value up'; }
+  if (worst) { wEl.textContent = '−$' + Math.abs(worst.chg).toFixed(0); wEl.className = 'kpi-value dn'; }
+}
+
 async function tick() {
   try {
     const r = await fetch('/api/backtest');
@@ -502,12 +567,66 @@ async function tick() {
     renderTrades(d.trades);
     renderPerTicker(d);
     renderRecent(d.trades);
+    renderMetrics(d);
   } catch (e) {
     document.getElementById('status-pill').className = 'status err';
     document.getElementById('status-text').textContent = 'FETCH ERR';
     console.error(e);
   }
 }
+
+// ===== Sidebar nav: smooth-scroll + active state + optional KPI flash =====
+document.querySelectorAll('.sidebar .nav-item').forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.sidebar .nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+    const target = item.getAttribute('data-scroll');
+    if (target) {
+      const el = document.querySelector(target);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    const flash = item.getAttribute('data-flash');
+    if (flash) {
+      const fel = document.querySelector(flash);
+      if (fel) {
+        fel.style.transition = 'background 200ms';
+        fel.style.background = 'var(--accent-soft)';
+        setTimeout(() => { fel.style.background = ''; }, 1100);
+      }
+    }
+  });
+});
+
+// ===== Export CSV =====
+document.getElementById('export-btn').addEventListener('click', () => {
+  if (!lastData || !lastData.trades || !lastData.trades.length) {
+    alert('No trades to export yet.');
+    return;
+  }
+  const header = ['date', 'ticker', 'action', 'qty', 'price', 'long_shares', 'short_shares', 'position_value'];
+  const rows = lastData.trades.map(t =>
+    [t.date, t.ticker, t.action, t.qty, t.price, t.long_shares, t.short_shares, t.position_value].join(',')
+  );
+  const csv = [header.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `backtest_trades_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+// ===== Live search filter =====
+document.getElementById('search').addEventListener('input', e => {
+  searchQuery = e.target.value.trim();
+  if (lastData) renderTrades(lastData.trades);
+  // scroll trades into view on first keystroke
+  if (searchQuery.length === 1) document.getElementById('sec-trades').scrollIntoView({ behavior: 'smooth' });
+});
 
 document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {

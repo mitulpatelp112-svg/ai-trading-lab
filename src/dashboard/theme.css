@@ -10,39 +10,39 @@
    ============================================================ */
 
 :root {
-  /* Surfaces — zinc/slate neutrals, no warm/cool mixing */
-  --bg-base: #09090b;            /* zinc-950, never #000 */
-  --bg-surface: #18181b;         /* zinc-900 */
-  --bg-surface-2: #1c1c1f;
-  --bg-hover: #27272a;           /* zinc-800 */
-  --bg-active: #3f3f46;
-  --bg-elevated: #1f1f23;
+  /* Surfaces — Claude warm charcoal palette */
+  --bg-base: #262624;            /* Claude warm dark */
+  --bg-surface: #30302E;
+  --bg-surface-2: #353532;
+  --bg-hover: #3B3B38;
+  --bg-active: #454540;
+  --bg-elevated: #383835;
 
-  /* Borders — slate 1px hairlines */
-  --border-soft: rgba(255, 255, 255, 0.06);
-  --border-strong: rgba(255, 255, 255, 0.10);
-  --border-emerald: rgba(16, 185, 129, 0.3);
+  /* Borders — warm hairlines */
+  --border-soft: rgba(245, 244, 239, 0.08);
+  --border-strong: rgba(245, 244, 239, 0.15);
+  --border-emerald: rgba(204, 120, 92, 0.3);
 
-  /* Text */
-  --text-primary: #fafafa;
-  --text-secondary: #a1a1aa;     /* zinc-400 */
-  --text-tertiary: #71717a;      /* zinc-500 */
-  --text-disabled: #52525b;
+  /* Text — warm ivory */
+  --text-primary: #F5F4EF;       /* Claude ivory */
+  --text-secondary: #C2C0B6;
+  --text-tertiary: #8F8D86;
+  --text-disabled: #6B6A63;
 
-  /* Single accent — emerald, desaturated, no glow */
-  --accent: #10b981;
-  --accent-hover: #34d399;
-  --accent-soft: rgba(16, 185, 129, 0.10);
+  /* Accent — Claude coral / clay ("book cloth") */
+  --accent: #CC785C;
+  --accent-hover: #D88E73;
+  --accent-soft: rgba(204, 120, 92, 0.14);
 
-  /* Semantic — green up / rose down, no neon */
-  --up: #10b981;
-  --up-bright: #34d399;
-  --up-soft: rgba(16, 185, 129, 0.08);
-  --down: #f43f5e;               /* rose-500, not red-500 */
-  --down-bright: #fb7185;
-  --down-soft: rgba(244, 63, 94, 0.08);
-  --warn: #eab308;
-  --warn-soft: rgba(234, 179, 8, 0.10);
+  /* Semantic — muted warm green up / terracotta down */
+  --up: #6FA98A;
+  --up-bright: #87C2A2;
+  --up-soft: rgba(111, 169, 138, 0.12);
+  --down: #D4694A;               /* terracotta, distinct from accent coral */
+  --down-bright: #E08368;
+  --down-soft: rgba(212, 105, 74, 0.12);
+  --warn: #D9A441;
+  --warn-soft: rgba(217, 164, 65, 0.12);
 
   /* Spacing */
   --space-1: 4px;
@@ -65,6 +65,7 @@
   /* Type */
   --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
   --font-mono: 'Geist Mono', 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+  --font-serif: 'Fraunces', 'Tiempos Headline', Georgia, serif;  /* Claude editorial display */
 
   /* Shadows — diffuse, tinted to bg, no neon glow */
   --shadow-diffuse: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
@@ -93,7 +94,7 @@ html, body {
 }
 
 body {
-  background: radial-gradient(ellipse at top, rgba(16, 185, 129, 0.04), transparent 50%),
+  background: radial-gradient(ellipse at top, rgba(204, 120, 92, 0.05), transparent 50%),
               var(--bg-base);
   min-height: 100vh;
 }
@@ -124,7 +125,7 @@ a:hover { color: var(--accent-hover); }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(9, 9, 11, 0.75);
+  background: rgba(38, 38, 36, 0.78);
   backdrop-filter: saturate(1.5) blur(20px);
   -webkit-backdrop-filter: saturate(1.5) blur(20px);
   border-bottom: 1px solid var(--border-soft);
@@ -145,7 +146,7 @@ a:hover { color: var(--accent-hover); }
 .brand-mark {
   width: 24px; height: 24px;
   border-radius: 6px;
-  background: linear-gradient(135deg, var(--accent), #059669);
+  background: linear-gradient(135deg, var(--accent), #A85738);
   display: flex; align-items: center; justify-content: center;
   color: white;
   font-weight: 700;
@@ -388,9 +389,10 @@ a:hover { color: var(--accent-hover); }
 .page-head .title { display: flex; flex-direction: column; gap: 4px; }
 .page-head h1 {
   margin: 0;
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
   line-height: 1.1;
 }
 .page-head .subtitle {
